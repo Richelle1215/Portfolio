@@ -4,6 +4,7 @@ import {
   AboutSection,
   SkillsSection,
   ProjectsSection,
+  ExperienceSection,
   ContactSection,
   CursorSpotlight,
   ScrollIndicator,
@@ -128,6 +129,7 @@ export default function Home() {
         <AboutSection />
         <SkillsSection />
         <ProjectsSection />
+        <ExperienceSection />
         <ContactSection />
       </div>
     </main>
