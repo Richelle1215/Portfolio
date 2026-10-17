@@ -14,6 +14,36 @@ const galaxyTheme = {
   deepBlue: "#001a4d",
 };
 
+// Hook for scroll animations
+export function useScrollAnimation() {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, []);
+
+  return { ref, isVisible };
+}
+
 export function CursorSpotlight() {
   const spotlightRef = useRef<HTMLDivElement>(null);
 
@@ -135,7 +165,7 @@ export function GridOverlay({ position = "top-right" }: { position?: string }) {
 }
 
 export function Header() {
-  const navItems = ["Home", "About", "Skills", "Projects", "Certificates"];
+  const navItems = ["Home", "About", "Skills", "Projects", "Contact"];
 
   return (
     <header
@@ -144,8 +174,14 @@ export function Header() {
         alignItems: "center",
         justifyContent: "space-between",
         padding: "20px 40px",
-        position: "relative",
-        zIndex: 10,
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 100,
+        backdropFilter: "blur(10px)",
+        background: `rgba(10, 0, 21, 0.8)`,
+        borderBottom: `1px solid ${galaxyTheme.neonCyan}40`,
       }}
     >
       <div
@@ -185,7 +221,7 @@ export function Header() {
         {navItems.map((item) => (
           <a
             key={item}
-            href="#"
+            href={`#${item.toLowerCase()}`}
             style={{
               color: item === "Home" ? galaxyTheme.starWhite : galaxyTheme.neonCyan,
               textDecoration: "none",
@@ -194,7 +230,6 @@ export function Header() {
               padding: item === "Home" ? "8px 16px" : "0",
               border: item === "Home" ? `1px solid ${galaxyTheme.starWhite}` : "none",
               borderRadius: "6px",
-              background: item === "Home" ? "transparent" : "transparent",
             }}
             onMouseEnter={(e) => {
               if (item !== "Home") {
@@ -218,15 +253,17 @@ export function Header() {
 export function HeroSection() {
   return (
     <section
+      id="home"
       style={{
         minHeight: "100vh",
         display: "grid",
         gridTemplateColumns: "1fr 1fr",
         gap: "40px",
         alignItems: "center",
-        padding: "60px 40px",
+        padding: "100px 40px 60px",
         position: "relative",
         overflow: "hidden",
+        marginTop: "60px",
       }}
     >
       <style>{`
@@ -262,13 +299,22 @@ export function HeroSection() {
             transform: scale(1);
           }
         }
+
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
       `}</style>
 
-      {/* Grid overlays */}
       <GridOverlay position="top-left" />
       <GridOverlay position="bottom-right" />
 
-      {/* Left content */}
       <div
         style={{
           display: "flex",
@@ -305,13 +351,7 @@ export function HeroSection() {
           I&apos;m Alex, an IT student passionate about building digital solutions. Welcome to my portfolio where curiosity meets code. Let&apos;s explore what we can build together.
         </p>
 
-        <div
-          style={{
-            display: "flex",
-            gap: "16px",
-            marginTop: "20px",
-          }}
-        >
+        <div style={{ display: "flex", gap: "16px", marginTop: "20px" }}>
           <a
             href="#projects"
             style={{
@@ -342,7 +382,6 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* Right side - Image/Avatar area */}
       <div
         style={{
           position: "relative",
@@ -368,7 +407,6 @@ export function HeroSection() {
             boxShadow: `0 0 40px ${galaxyTheme.nebulaPink}30`,
           }}
         >
-          {/* Placeholder for avatar/image */}
           <div
             style={{
               fontSize: "80px",
@@ -379,7 +417,6 @@ export function HeroSection() {
             👨‍💻
           </div>
 
-          {/* Play button */}
           <div
             style={{
               position: "absolute",
@@ -412,6 +449,527 @@ export function HeroSection() {
               }}
             />
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function AboutSection() {
+  const { ref, isVisible } = useScrollAnimation();
+
+  return (
+    <section
+      id="about"
+      ref={ref}
+      style={{
+        minHeight: "100vh",
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+        gap: "60px",
+        alignItems: "center",
+        padding: "100px 40px",
+        position: "relative",
+        overflow: "hidden",
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? "translateY(0)" : "translateY(30px)",
+        transition: "all 0.8s ease-out",
+      }}
+    >
+      <GridOverlay position="top-left" />
+      <GridOverlay position="bottom-right" />
+
+      <div style={{ zIndex: 5 }}>
+        <h2
+          style={{
+            fontSize: "clamp(2.5rem, 6vw, 4rem)",
+            fontWeight: 900,
+            color: galaxyTheme.starWhite,
+            margin: "0 0 20px",
+            letterSpacing: "-1px",
+          }}
+        >
+          About Me
+        </h2>
+
+        <div
+          style={{
+            fontSize: "14px",
+            color: galaxyTheme.neonCyan,
+            letterSpacing: "2px",
+            textTransform: "uppercase",
+            marginBottom: "20px",
+            fontWeight: 600,
+          }}
+        >
+          • Education & Background
+        </div>
+
+        <p
+          style={{
+            fontSize: "16px",
+            color: galaxyTheme.starWhite,
+            opacity: 0.85,
+            lineHeight: 1.8,
+            marginBottom: "20px",
+          }}
+        >
+          I&apos;m a third-year IT student at Example State University, graduating in 2027. My passion lies in connecting technology with real-world problems through thoughtful design and clean code.
+        </p>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "20px",
+            marginTop: "40px",
+          }}
+        >
+          <div style={{ background: `${galaxyTheme.neonCyan}10`, borderRadius: "8px", padding: "20px", border: `1px solid ${galaxyTheme.neonCyan}40` }}>
+            <div style={{ color: galaxyTheme.neonCyan, fontWeight: 700, marginBottom: "10px" }}>Currently Studying</div>
+            <div style={{ fontSize: "14px", color: galaxyTheme.starWhite, opacity: 0.8 }}>
+              Database Systems<br />
+              Networking<br />
+              Web Development<br />
+              Information Security
+            </div>
+          </div>
+
+          <div style={{ background: `${galaxyTheme.hotMagenta}10`, borderRadius: "8px", padding: "20px", border: `1px solid ${galaxyTheme.hotMagenta}40` }}>
+            <div style={{ color: galaxyTheme.hotMagenta, fontWeight: 700, marginBottom: "10px" }}>Interests</div>
+            <div style={{ fontSize: "14px", color: galaxyTheme.starWhite, opacity: 0.8 }}>
+              Full-Stack Development<br />
+              Linux & Networking<br />
+              Cloud Deployment<br />
+              Open Source
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        style={{
+          background: `linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(255, 20, 147, 0.1))`,
+          borderRadius: "12px",
+          border: `2px solid ${galaxyTheme.neonCyan}40`,
+          padding: "40px",
+          zIndex: 5,
+          boxShadow: `0 0 40px ${galaxyTheme.nebulaPink}20`,
+        }}
+      >
+        <h3 style={{ color: galaxyTheme.neonCyan, marginTop: 0, marginBottom: "20px" }}>Fun Facts</h3>
+        <ul style={{ color: galaxyTheme.starWhite, opacity: 0.85, lineHeight: 2, listStyle: "none", padding: 0 }}>
+          <li>🎓 Third-year IT student</li>
+          <li>🏠 Built a Linux home lab</li>
+          <li>🔧 Love experimenting with new tech</li>
+          <li>📚 Always learning & documenting</li>
+          <li>🚀 Passionate about clean code</li>
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+export function SkillsSection() {
+  const { ref, isVisible } = useScrollAnimation();
+
+  const skills = [
+    {
+      category: "Development",
+      icon: "</>",
+      items: ["JavaScript", "TypeScript", "React", "Next.js", "HTML & CSS"],
+    },
+    {
+      category: "Backend",
+      icon: "◌",
+      items: ["PostgreSQL", "MySQL", "Firebase", "Supabase", "REST APIs"],
+    },
+    {
+      category: "Systems",
+      icon: ">",
+      items: ["Linux", "TCP/IP", "Networking", "Bash", "Docker"],
+    },
+    {
+      category: "Tools",
+      icon: "+",
+      items: ["Git", "GitHub", "Figma", "Vercel", "Postman"],
+    },
+  ];
+
+  return (
+    <section
+      id="skills"
+      ref={ref}
+      style={{
+        minHeight: "100vh",
+        padding: "100px 40px",
+        position: "relative",
+        overflow: "hidden",
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? "translateY(0)" : "translateY(30px)",
+        transition: "all 0.8s ease-out",
+      }}
+    >
+      <div style={{ maxWidth: "1200px", margin: "0 auto", zIndex: 5, position: "relative" }}>
+        <h2
+          style={{
+            fontSize: "clamp(2.5rem, 6vw, 4rem)",
+            fontWeight: 900,
+            color: galaxyTheme.starWhite,
+            margin: "0 0 20px",
+            letterSpacing: "-1px",
+            textAlign: "center",
+          }}
+        >
+          Tech Stack
+        </h2>
+
+        <div
+          style={{
+            fontSize: "14px",
+            color: galaxyTheme.neonCyan,
+            letterSpacing: "2px",
+            textTransform: "uppercase",
+            marginBottom: "40px",
+            fontWeight: 600,
+            textAlign: "center",
+          }}
+        >
+          • Tools & Technologies
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+            gap: "20px",
+          }}
+        >
+          {skills.map((skill) => (
+            <div
+              key={skill.category}
+              style={{
+                background: `${galaxyTheme.vividPurple}08`,
+                border: `1px solid ${galaxyTheme.neonCyan}40`,
+                borderRadius: "12px",
+                padding: "24px",
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+                boxShadow: `0 0 12px ${galaxyTheme.nebulaPink}20`,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = galaxyTheme.neonCyan;
+                e.currentTarget.style.boxShadow = `0 0 25px ${galaxyTheme.neonCyan}40`;
+                e.currentTarget.style.transform = "translateY(-4px)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = `${galaxyTheme.neonCyan}40`;
+                e.currentTarget.style.boxShadow = `0 0 12px ${galaxyTheme.nebulaPink}20`;
+                e.currentTarget.style.transform = "translateY(0)";
+              }}
+            >
+              <div
+                style={{
+                  width: "50px",
+                  height: "50px",
+                  background: `${galaxyTheme.neonCyan}20`,
+                  borderRadius: "10px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "24px",
+                  marginBottom: "16px",
+                  boxShadow: `0 0 12px ${galaxyTheme.neonCyan}40`,
+                }}
+              >
+                {skill.icon}
+              </div>
+
+              <h3 style={{ color: galaxyTheme.starWhite, margin: "0 0 12px", fontSize: "20px" }}>
+                {skill.category}
+              </h3>
+
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                {skill.items.map((item) => (
+                  <span
+                    key={item}
+                    style={{
+                      background: `${galaxyTheme.neonCyan}15`,
+                      border: `1px solid ${galaxyTheme.neonCyan}40`,
+                      color: galaxyTheme.neonCyan,
+                      padding: "6px 12px",
+                      borderRadius: "20px",
+                      fontSize: "12px",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function ProjectsSection() {
+  const { ref, isVisible } = useScrollAnimation();
+
+  const projects = [
+    {
+      title: "Portfolio Website",
+      description: "Modern portfolio with galaxy theme and smooth animations",
+      tags: ["Next.js", "React", "TypeScript"],
+      image: "🌌",
+    },
+    {
+      title: "Linux Home Lab",
+      description: "Network setup with VMs, routing, and security configs",
+      tags: ["Linux", "Networking", "Docker"],
+      image: "🖥️",
+    },
+    {
+      title: "REST API",
+      description: "Full-stack application with PostgreSQL and authentication",
+      tags: ["Node.js", "PostgreSQL", "REST"],
+      image: "⚙️",
+    },
+  ];
+
+  return (
+    <section
+      id="projects"
+      ref={ref}
+      style={{
+        minHeight: "100vh",
+        padding: "100px 40px",
+        position: "relative",
+        overflow: "hidden",
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? "translateY(0)" : "translateY(30px)",
+        transition: "all 0.8s ease-out",
+      }}
+    >
+      <div style={{ maxWidth: "1200px", margin: "0 auto", zIndex: 5, position: "relative" }}>
+        <h2
+          style={{
+            fontSize: "clamp(2.5rem, 6vw, 4rem)",
+            fontWeight: 900,
+            color: galaxyTheme.starWhite,
+            margin: "0 0 20px",
+            letterSpacing: "-1px",
+            textAlign: "center",
+          }}
+        >
+          Projects
+        </h2>
+
+        <div
+          style={{
+            fontSize: "14px",
+            color: galaxyTheme.neonCyan,
+            letterSpacing: "2px",
+            textTransform: "uppercase",
+            marginBottom: "40px",
+            fontWeight: 600,
+            textAlign: "center",
+          }}
+        >
+          • Recent Work
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+            gap: "24px",
+          }}
+        >
+          {projects.map((project) => (
+            <div
+              key={project.title}
+              style={{
+                background: `linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(255, 20, 147, 0.05))`,
+                border: `1px solid ${galaxyTheme.neonCyan}40`,
+                borderRadius: "12px",
+                overflow: "hidden",
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+                boxShadow: `0 0 20px ${galaxyTheme.nebulaPink}20`,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = galaxyTheme.neonCyan;
+                e.currentTarget.style.boxShadow = `0 0 30px ${galaxyTheme.neonCyan}40`;
+                e.currentTarget.style.transform = "translateY(-8px)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = `${galaxyTheme.neonCyan}40`;
+                e.currentTarget.style.boxShadow = `0 0 20px ${galaxyTheme.nebulaPink}20`;
+                e.currentTarget.style.transform = "translateY(0)";
+              }}
+            >
+              <div
+                style={{
+                  height: "200px",
+                  background: `linear-gradient(135deg, ${galaxyTheme.deepPurple}, ${galaxyTheme.deepBlue})`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "80px",
+                  borderBottom: `1px solid ${galaxyTheme.neonCyan}40`,
+                }}
+              >
+                {project.image}
+              </div>
+
+              <div style={{ padding: "20px" }}>
+                <h3 style={{ color: galaxyTheme.starWhite, margin: "0 0 8px", fontSize: "18px", fontWeight: 700 }}>
+                  {project.title}
+                </h3>
+
+                <p style={{ color: galaxyTheme.starWhite, opacity: 0.7, fontSize: "14px", margin: "0 0 16px", lineHeight: 1.6 }}>
+                  {project.description}
+                </p>
+
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                  {project.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      style={{
+                        background: `${galaxyTheme.hotMagenta}15`,
+                        border: `1px solid ${galaxyTheme.hotMagenta}40`,
+                        color: galaxyTheme.hotMagenta,
+                        padding: "4px 10px",
+                        borderRadius: "16px",
+                        fontSize: "11px",
+                        fontWeight: 600,
+                      }}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function ContactSection() {
+  const { ref, isVisible } = useScrollAnimation();
+
+  return (
+    <section
+      id="contact"
+      ref={ref}
+      style={{
+        minHeight: "80vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "100px 40px",
+        position: "relative",
+        overflow: "hidden",
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? "translateY(0)" : "translateY(30px)",
+        transition: "all 0.8s ease-out",
+      }}
+    >
+      <div style={{ maxWidth: "600px", textAlign: "center", zIndex: 5, position: "relative" }}>
+        <h2
+          style={{
+            fontSize: "clamp(2.5rem, 6vw, 4rem)",
+            fontWeight: 900,
+            color: galaxyTheme.starWhite,
+            margin: "0 0 20px",
+            letterSpacing: "-1px",
+          }}
+        >
+          Let&apos;s Connect
+        </h2>
+
+        <p
+          style={{
+            fontSize: "16px",
+            color: galaxyTheme.starWhite,
+            opacity: 0.85,
+            lineHeight: 1.8,
+            marginBottom: "40px",
+          }}
+        >
+          Interested in collaborating or learning more? Feel free to reach out. I&apos;m always open to new opportunities and conversations.
+        </p>
+
+        <div style={{ display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap" }}>
+          <a
+            href="mailto:alex@example.com"
+            style={{
+              padding: "12px 32px",
+              background: `linear-gradient(135deg, ${galaxyTheme.neonCyan}, ${galaxyTheme.cosmicBlue})`,
+              color: galaxyTheme.darkVoid,
+              border: "none",
+              borderRadius: "6px",
+              cursor: "pointer",
+              fontWeight: 700,
+              fontSize: "14px",
+              transition: "all 0.3s ease",
+              boxShadow: `0 0 20px ${galaxyTheme.neonCyan}`,
+              textDecoration: "none",
+              display: "inline-block",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.boxShadow = `0 0 30px ${galaxyTheme.neonCyan}, 0 0 40px ${galaxyTheme.cosmicBlue}`;
+              e.currentTarget.style.transform = "translateY(-2px)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.boxShadow = `0 0 20px ${galaxyTheme.neonCyan}`;
+              e.currentTarget.style.transform = "translateY(0)";
+            }}
+          >
+            Email Me
+          </a>
+
+          <a
+            href="https://github.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              padding: "12px 32px",
+              background: "transparent",
+              color: galaxyTheme.neonCyan,
+              border: `1px solid ${galaxyTheme.neonCyan}`,
+              borderRadius: "6px",
+              cursor: "pointer",
+              fontWeight: 700,
+              fontSize: "14px",
+              transition: "all 0.3s ease",
+              boxShadow: `0 0 12px ${galaxyTheme.neonCyan}40`,
+              textDecoration: "none",
+              display: "inline-block",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = `${galaxyTheme.neonCyan}10`;
+              e.currentTarget.style.boxShadow = `0 0 20px ${galaxyTheme.neonCyan}`;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "transparent";
+              e.currentTarget.style.boxShadow = `0 0 12px ${galaxyTheme.neonCyan}40`;
+            }}
+          >
+            GitHub
+          </a>
+        </div>
+
+        <div style={{ marginTop: "60px", borderTop: `1px solid ${galaxyTheme.neonCyan}40`, paddingTop: "40px" }}>
+          <p style={{ color: galaxyTheme.neonCyan, opacity: 0.6, fontSize: "12px", letterSpacing: "1px" }}>
+            © 2024 Alex Morgan. All rights reserved. Built with Next.js & React.
+          </p>
         </div>
       </div>
     </section>

@@ -1,4 +1,13 @@
-import { Header, HeroSection, CursorSpotlight, ScrollIndicator } from "./interactive-elements";
+import {
+  Header,
+  HeroSection,
+  AboutSection,
+  SkillsSection,
+  ProjectsSection,
+  ContactSection,
+  CursorSpotlight,
+  ScrollIndicator,
+} from "./interactive-elements";
 
 const galaxyTheme = {
   darkVoid: "#0a0015",
@@ -25,7 +34,7 @@ export default function Home() {
           #330000 100%)`,
         backgroundAttachment: "fixed",
         color: galaxyTheme.starWhite,
-        minHeight: "200vh",
+        minHeight: "100vh",
         fontFamily: 'Arial, "Helvetica Neue", sans-serif',
         position: "relative",
         overflow: "hidden",
@@ -116,6 +125,10 @@ export default function Home() {
       <div style={{ position: "relative", zIndex: 1 }}>
         <Header />
         <HeroSection />
+        <AboutSection />
+        <SkillsSection />
+        <ProjectsSection />
+        <ContactSection />
       </div>
     </main>
   );
