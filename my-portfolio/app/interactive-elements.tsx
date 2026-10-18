@@ -233,10 +233,10 @@ export function AboutSection() {
 export function SkillsSection() {
   const { ref, isVisible } = useScrollAnimation();
   const skills = [
-    { category: "Development", icon: "</>", items: ["JavaScript", "TypeScript", "React", "Next.js", "HTML & CSS"] },
-    { category: "Backend", icon: "◌", items: ["PostgreSQL", "MySQL", "Firebase", "Supabase", "REST APIs"] },
-    { category: "Systems", icon: ">", items: ["Linux", "TCP/IP", "Networking", "Bash", "Docker"] },
-    { category: "Tools", icon: "+", items: ["Git", "GitHub", "Figma", "Vercel", "Postman"] },
+    { category: "Backend", icon: "◎", items: ["Laravel", "Blade", "PHP", "REST APIs", "Database Design"] },
+    { category: "Mobile", icon: "📱", items: ["Kotlin", "Android Development", "Mobile Apps", "Java"] },
+    { category: "Frontend", icon: "</>", items: ["JavaScript", "TypeScript", "React", "Next.js", "HTML & CSS"] },
+    { category: "Tools & Platforms", icon: "⚙️", items: ["Git", "GitHub", "MySQL", "Docker", "VS Code"] },
   ];
 
   return (
@@ -264,9 +264,12 @@ export function SkillsSection() {
 export function ProjectsSection() {
   const { ref, isVisible } = useScrollAnimation();
   const projects = [
-    { title: "Portfolio Website", description: "Modern portfolio with galaxy theme and smooth animations. Features parallax scrolling, text reveal animations, responsive design, and interactive cursor effects.", tags: ["Next.js", "React", "TypeScript"], image: "🌌", link: "#", details: "Full-stack portfolio with modern UX design" },
-    { title: "Linux Home Lab", description: "Network setup with virtual machines, routing configuration, security policies, and packet analysis. Built with VirtualBox and Cisco Packet Tracer.", tags: ["Linux", "Networking", "Docker"], image: "🖥️", link: "#", details: "Enterprise networking infrastructure" },
-    { title: "REST API Backend", description: "Full-stack application with PostgreSQL database, JWT authentication, and RESTful endpoints. Deployed on Vercel with automated testing.", tags: ["Node.js", "PostgreSQL", "REST"], image: "⚙️", link: "#", details: "Scalable backend infrastructure" },
+    { title: "BasicEd Library", description: "School library inventory management system built with Laravel and Blade. Features book cataloging, patron management, borrowing/returning system, and reporting dashboard. Streamlines library operations for educational institutions.", tags: ["Laravel", "Blade", "MySQL", "PHP"], image: "📚", link: "https://github.com/Richelle1215/BasicEd_Library", details: "Library Management System" },
+    { title: "SmartKitchen", description: "AI-powered recipe sharing platform with intelligent recommendations. Built with Laravel backend and modern frontend. Users can discover recipes, share culinary creations, and get personalized suggestions based on preferences and available ingredients.", tags: ["Laravel", "Blade", "JavaScript", "MySQL"], image: "🍳", link: "https://github.com/Richelle1215/SmartKitchen", details: "Recipe Sharing & Discovery" },
+    { title: "Budget Tracker", description: "Personal finance tracker app built with Kotlin for Android. Track expenses, manage budgets, set financial goals, and visualize spending patterns. Helps users gain better control over their personal finances with intuitive categorization and reporting.", tags: ["Kotlin", "Android", "SQLite", "Java"], image: "💰", link: "https://github.com/Richelle1215/Budget-Tracker", details: "Personal Finance Manager" },
+    { title: "HAYST", description: "Large-scale full-stack application. Comprehensive project showcasing advanced development practices, complex business logic, and scalable architecture. Built with Laravel backend demonstrating professional-grade application development.", tags: ["Laravel", "Blade", "PHP", "MySQL"], image: "🎯", link: "https://github.com/Richelle1215/HAYST", details: "Full-Stack Application" },
+    { title: "PetHealthTracker", description: "Mobile app for tracking pet health records. Manage veterinary appointments, vaccinations, medications, and health history. Keep all your pet's medical information organized in one convenient place with reminders for important dates.", tags: ["Kotlin", "Android", "Java", "SQLite"], image: "🐾", link: "https://github.com/Richelle1215/PetHealthTracker", details: "Pet Health Management" },
+    { title: "E-Commerce Platform", description: "Full-featured e-commerce solution built with Laravel and Blade. Product catalog, shopping cart, order management, and payment integration. Modern design with responsive layout optimized for desktop and mobile shopping experiences.", tags: ["Laravel", "Blade", "MySQL", "PHP"], image: "🛍️", link: "https://github.com/Richelle1215/LARAVEL-E-COMMERCE", details: "E-Commerce Solution" },
   ];
 
   return (
@@ -300,9 +303,9 @@ export function ProjectsSection() {
 export function ExperienceSection() {
   const { ref, isVisible } = useScrollAnimation();
   const experiences = [
-    { title: "Full-Stack Developer (Intern)", company: "Tech Startup XYZ", period: "Jun 2024 - Present", description: "Building web applications with React and Node.js. Working on database optimization and API design.", skills: ["React", "Node.js", "PostgreSQL", "Docker"] },
-    { title: "IT Support Technician", company: "University IT Department", period: "Jan 2023 - May 2024", description: "Provided technical support to 500+ users. Managed network infrastructure and system administration.", skills: ["Linux", "Networking", "Active Directory", "Ticketing Systems"] },
-    { title: "Web Development Student", company: "Example State University", period: "Sep 2021 - Present", description: "Pursuing B.S. in Information Technology with focus on software development and cybersecurity.", skills: ["TypeScript", "React", "Next.js", "Database Design"] },
+    { title: "Full-Stack Developer", company: "Personal Projects", period: "2024 - Present", description: "Actively developing and maintaining 20+ full-stack applications. Specializing in Laravel/Blade backend systems and Kotlin mobile apps. Building production-ready applications with focus on clean code and user experience.", skills: ["Laravel", "Kotlin", "JavaScript", "MySQL", "Android"] },
+    { title: "Mobile App Developer", company: "Personal & Portfolio Projects", period: "2023 - Present", description: "Designed and developed multiple Android applications using Kotlin. Created finance tracking and pet health management apps. Implemented SQLite databases, UI/UX design, and mobile-specific features.", skills: ["Kotlin", "Android", "SQLite", "Java", "UI/UX Design"] },
+    { title: "Web Developer", company: "Portfolio & Educational Projects", period: "2022 - Present", description: "Built comprehensive web applications using Laravel and modern JavaScript frameworks. Developed e-commerce platforms, library management systems, and recipe sharing applications with responsive design.", skills: ["Laravel", "Blade", "PHP", "React", "Next.js", "MySQL"] },
   ];
 
   return (
@@ -342,16 +345,16 @@ export function ContactSection() {
     <section id="contact" ref={ref} style={{ minHeight: "80vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "100px 40px", position: "relative", overflow: "hidden", opacity: isVisible ? 1 : 0, transform: isVisible ? "translateY(0)" : "translateY(30px)", transition: "all 0.8s ease-out" }}>
       <div style={{ maxWidth: "600px", textAlign: "center", zIndex: 5, position: "relative" }}>
         <h2 style={{ fontSize: "clamp(2.5rem, 6vw, 4rem)", fontWeight: 900, color: galaxyTheme.starWhite, margin: "0 0 20px", letterSpacing: "-1px" }}><TextReveal>Let&apos;s Connect</TextReveal></h2>
-        <p style={{ fontSize: "16px", color: galaxyTheme.starWhite, opacity: 0.85, lineHeight: 1.8, marginBottom: "40px" }}>Interested in collaborating or learning more? Feel free to reach out. I&apos;m always open to new opportunities and conversations.</p>
+        <p style={{ fontSize: "16px", color: galaxyTheme.starWhite, opacity: 0.85, lineHeight: 1.8, marginBottom: "40px" }}>I&apos;m always interested in collaborating on interesting projects or discussing new ideas. Feel free to reach out through any of these channels. Let&apos;s build something amazing together!</p>
 
         <div style={{ display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap" }}>
-          <a href="mailto:alex@example.com" style={{ padding: "12px 32px", background: `linear-gradient(135deg, ${galaxyTheme.neonCyan}, ${galaxyTheme.cosmicBlue})`, color: galaxyTheme.darkVoid, border: "none", borderRadius: "6px", cursor: "pointer", fontWeight: 700, fontSize: "14px", transition: "all 0.3s ease", boxShadow: `0 0 20px ${galaxyTheme.neonCyan}`, textDecoration: "none", display: "inline-block" }} onMouseEnter={(e) => { e.currentTarget.style.boxShadow = `0 0 30px ${galaxyTheme.neonCyan}, 0 0 40px ${galaxyTheme.cosmicBlue}`; e.currentTarget.style.transform = "translateY(-2px)"; }} onMouseLeave={(e) => { e.currentTarget.style.boxShadow = `0 0 20px ${galaxyTheme.neonCyan}`; e.currentTarget.style.transform = "translateY(0)"; }}>Email Me</a>
+          <a href="https://github.com/Richelle1215" target="_blank" rel="noopener noreferrer" style={{ padding: "12px 32px", background: `linear-gradient(135deg, ${galaxyTheme.neonCyan}, ${galaxyTheme.cosmicBlue})`, color: galaxyTheme.darkVoid, border: "none", borderRadius: "6px", cursor: "pointer", fontWeight: 700, fontSize: "14px", transition: "all 0.3s ease", boxShadow: `0 0 20px ${galaxyTheme.neonCyan}`, textDecoration: "none", display: "inline-block" }} onMouseEnter={(e) => { e.currentTarget.style.boxShadow = `0 0 30px ${galaxyTheme.neonCyan}, 0 0 40px ${galaxyTheme.cosmicBlue}`; e.currentTarget.style.transform = "translateY(-2px)"; }} onMouseLeave={(e) => { e.currentTarget.style.boxShadow = `0 0 20px ${galaxyTheme.neonCyan}`; e.currentTarget.style.transform = "translateY(0)"; }}>GitHub Profile</a>
 
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer" style={{ padding: "12px 32px", background: "transparent", color: galaxyTheme.neonCyan, border: `1px solid ${galaxyTheme.neonCyan}`, borderRadius: "6px", cursor: "pointer", fontWeight: 700, fontSize: "14px", transition: "all 0.3s ease", boxShadow: `0 0 12px ${galaxyTheme.neonCyan}40`, textDecoration: "none", display: "inline-block" }} onMouseEnter={(e) => { e.currentTarget.style.background = `${galaxyTheme.neonCyan}10`; e.currentTarget.style.boxShadow = `0 0 20px ${galaxyTheme.neonCyan}`; }} onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.boxShadow = `0 0 12px ${galaxyTheme.neonCyan}40`; }}>GitHub</a>
+          <a href="https://www.linkedin.com/in/richelle1215/" target="_blank" rel="noopener noreferrer" style={{ padding: "12px 32px", background: "transparent", color: galaxyTheme.neonCyan, border: `1px solid ${galaxyTheme.neonCyan}`, borderRadius: "6px", cursor: "pointer", fontWeight: 700, fontSize: "14px", transition: "all 0.3s ease", boxShadow: `0 0 12px ${galaxyTheme.neonCyan}40`, textDecoration: "none", display: "inline-block" }} onMouseEnter={(e) => { e.currentTarget.style.background = `${galaxyTheme.neonCyan}10`; e.currentTarget.style.boxShadow = `0 0 20px ${galaxyTheme.neonCyan}`; }} onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.boxShadow = `0 0 12px ${galaxyTheme.neonCyan}40`; }}>LinkedIn</a>
         </div>
 
         <div style={{ marginTop: "60px", borderTop: `1px solid ${galaxyTheme.neonCyan}40`, paddingTop: "40px" }}>
-          <p style={{ color: galaxyTheme.neonCyan, opacity: 0.6, fontSize: "12px", letterSpacing: "1px" }}>© 2024 Alex Morgan. All rights reserved. Built with Next.js & React.</p>
+          <p style={{ color: galaxyTheme.neonCyan, opacity: 0.6, fontSize: "12px", letterSpacing: "1px" }}>© 2024 Richelle Mendez. All rights reserved. Built with Next.js & React.</p>
         </div>
       </div>
     </section>
