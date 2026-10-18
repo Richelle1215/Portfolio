@@ -166,8 +166,6 @@ export function HeroSection() {
   return (
     <section id="home" style={{ minHeight: "100vh", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "40px", alignItems: "center", padding: "100px 40px 60px", position: "relative", overflow: "hidden", marginTop: "60px" }}>
       <style>{`@keyframes slideInLeft { from { opacity: 0; transform: translateX(-50px); } to { opacity: 1; transform: translateX(0); } } @keyframes slideInRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } } @keyframes scaleIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } } @media (max-width: 768px) { section { grid-template-columns: 1fr !important; } }`}</style>
-      <GridOverlay position="top-left" />
-      <GridOverlay position="bottom-right" />
 
       <div style={{ display: "flex", flexDirection: "column", gap: "20px", zIndex: 5, animation: "slideInLeft 0.8s ease-out", transform: `translateY(${parallax * 0.3}px)` }}>
         <h1 style={{ fontSize: "clamp(3rem, 8vw, 6rem)", fontWeight: 900, color: galaxyTheme.starWhite, margin: 0, lineHeight: 0.9, letterSpacing: "-2px", textTransform: "uppercase" }}><TextReveal delay={0}>I&apos;m Richelle</TextReveal></h1>
@@ -195,9 +193,6 @@ export function AboutSection() {
 
   return (
     <section id="about" ref={ref} style={{ minHeight: "100vh", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "60px", alignItems: "center", padding: "100px 40px", position: "relative", overflow: "hidden", opacity: isVisible ? 1 : 0, transform: isVisible ? `translateY(0)` : "translateY(30px)", transition: "all 0.8s ease-out" }}>
-      <GridOverlay position="top-left" />
-      <GridOverlay position="bottom-right" />
-
       <div style={{ zIndex: 5, transform: `translateY(${parallax * 0.1}px)` }}>
         <h2 style={{ fontSize: "clamp(2.5rem, 6vw, 4rem)", fontWeight: 900, color: galaxyTheme.starWhite, margin: "0 0 20px", letterSpacing: "-1px" }}><TextReveal>About Me</TextReveal></h2>
         <div style={{ fontSize: "14px", color: galaxyTheme.neonCyan, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "20px", fontWeight: 600 }}>• Full-Stack Developer</div>
