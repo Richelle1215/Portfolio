@@ -289,7 +289,7 @@ export function ProjectsSection() {
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "16px" }}>
                   {project.tags.map((tag) => (<span key={tag} style={{ background: `${galaxyTheme.hotMagenta}15`, border: `1px solid ${galaxyTheme.hotMagenta}40`, color: galaxyTheme.hotMagenta, padding: "4px 10px", borderRadius: "16px", fontSize: "11px", fontWeight: 600 }}>{tag}</span>))}
                 </div>
-                <a href={project.link} style={{ display: "inline-block", color: galaxyTheme.neonCyan, textDecoration: "none", fontWeight: 600, fontSize: "12px", transition: "all 0.3s ease", cursor: "pointer" }} onMouseEnter={(e) => { e.currentTarget.style.color = galaxyTheme.hotMagenta; }} onMouseLeave={(e) => { e.currentTarget.style.color = galaxyTheme.neonCyan; }}>View Details →</a>
+                <a href={project.link} target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", color: galaxyTheme.neonCyan, textDecoration: "none", fontWeight: 600, fontSize: "12px", transition: "all 0.3s ease", cursor: "pointer" }} onMouseEnter={(e) => { e.currentTarget.style.color = galaxyTheme.hotMagenta; }} onMouseLeave={(e) => { e.currentTarget.style.color = galaxyTheme.neonCyan; }}>View on GitHub →</a>
               </div>
             </div>
           ))}
