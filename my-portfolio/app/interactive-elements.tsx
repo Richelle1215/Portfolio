@@ -147,7 +147,7 @@ export function Header({ onNavigate }: { onNavigate?: (id: string) => void }) {
           <span style={{ color: "#ffcc00" }}>●</span>
           <span style={{ color: "#00ff66" }}>●</span>
         </div>
-        <span style={{ color: galaxyTheme.neonCyan }}>ALEX.DEV</span>
+        <span style={{ color: galaxyTheme.neonCyan }}>RICHELLE.DEV</span>
       </div>
 
       <nav style={{ display: "flex", alignItems: "center", gap: 30, fontSize: 13, letterSpacing: "1px", textTransform: "uppercase", flexWrap: "wrap" }}>
@@ -170,8 +170,8 @@ export function HeroSection() {
       <GridOverlay position="bottom-right" />
 
       <div style={{ display: "flex", flexDirection: "column", gap: "20px", zIndex: 5, animation: "slideInLeft 0.8s ease-out", transform: `translateY(${parallax * 0.3}px)` }}>
-        <h1 style={{ fontSize: "clamp(3rem, 8vw, 6rem)", fontWeight: 900, color: galaxyTheme.starWhite, margin: 0, lineHeight: 0.9, letterSpacing: "-2px", textTransform: "uppercase" }}><TextReveal delay={0}>Hello!</TextReveal></h1>
-        <p style={{ fontSize: "16px", color: galaxyTheme.starWhite, opacity: 0.7, lineHeight: 1.8, maxWidth: "500px", letterSpacing: "0.5px" }}>I&apos;m Alex, an IT student passionate about building digital solutions. Welcome to my portfolio where curiosity meets code. Let&apos;s explore what we can build together.</p>
+        <h1 style={{ fontSize: "clamp(3rem, 8vw, 6rem)", fontWeight: 900, color: galaxyTheme.starWhite, margin: 0, lineHeight: 0.9, letterSpacing: "-2px", textTransform: "uppercase" }}><TextReveal delay={0}>I&apos;m Richelle</TextReveal></h1>
+        <p style={{ fontSize: "16px", color: galaxyTheme.starWhite, opacity: 0.7, lineHeight: 1.8, maxWidth: "500px", letterSpacing: "0.5px" }}>Full-stack developer passionate about creating innovative solutions. I build web and mobile applications using modern technologies. Welcome to my portfolio where creativity meets code.</p>
         <div style={{ display: "flex", gap: "16px", marginTop: "20px", flexWrap: "wrap" }}>
           <a href="#projects" style={{ padding: "12px 32px", background: `linear-gradient(135deg, ${galaxyTheme.neonCyan}, ${galaxyTheme.cosmicBlue})`, color: galaxyTheme.darkVoid, border: "none", borderRadius: "6px", cursor: "pointer", fontWeight: 700, fontSize: "14px", transition: "all 0.3s ease", boxShadow: `0 0 20px ${galaxyTheme.neonCyan}`, textDecoration: "none", display: "inline-block" }} onMouseEnter={(e) => { e.currentTarget.style.boxShadow = `0 0 30px ${galaxyTheme.neonCyan}, 0 0 40px ${galaxyTheme.cosmicBlue}`; e.currentTarget.style.transform = "translateY(-2px)"; }} onMouseLeave={(e) => { e.currentTarget.style.boxShadow = `0 0 20px ${galaxyTheme.neonCyan}`; e.currentTarget.style.transform = "translateY(0)"; }}>View Projects</a>
         </div>
@@ -200,18 +200,18 @@ export function AboutSection() {
 
       <div style={{ zIndex: 5, transform: `translateY(${parallax * 0.1}px)` }}>
         <h2 style={{ fontSize: "clamp(2.5rem, 6vw, 4rem)", fontWeight: 900, color: galaxyTheme.starWhite, margin: "0 0 20px", letterSpacing: "-1px" }}><TextReveal>About Me</TextReveal></h2>
-        <div style={{ fontSize: "14px", color: galaxyTheme.neonCyan, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "20px", fontWeight: 600 }}>• Education & Background</div>
-        <p style={{ fontSize: "16px", color: galaxyTheme.starWhite, opacity: 0.85, lineHeight: 1.8, marginBottom: "20px" }}>I&apos;m a third-year IT student at Example State University, graduating in 2027. My passion lies in connecting technology with real-world problems through thoughtful design and clean code.</p>
+        <div style={{ fontSize: "14px", color: galaxyTheme.neonCyan, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "20px", fontWeight: 600 }}>• Full-Stack Developer</div>
+        <p style={{ fontSize: "16px", color: galaxyTheme.starWhite, opacity: 0.85, lineHeight: 1.8, marginBottom: "20px" }}>I&apos;m a passionate full-stack developer with expertise in web and mobile development. I specialize in building scalable applications using Laravel, Blade, Kotlin, and modern JavaScript frameworks. I love crafting elegant solutions to complex problems and contributing to open-source projects.</p>
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginTop: "40px" }}>
           <div style={{ background: `${galaxyTheme.neonCyan}10`, borderRadius: "8px", padding: "20px", border: `1px solid ${galaxyTheme.neonCyan}40` }}>
-            <div style={{ color: galaxyTheme.neonCyan, fontWeight: 700, marginBottom: "10px" }}>Currently Studying</div>
-            <div style={{ fontSize: "14px", color: galaxyTheme.starWhite, opacity: 0.8 }}>Database Systems<br />Networking<br />Web Development<br />Information Security</div>
+            <div style={{ color: galaxyTheme.neonCyan, fontWeight: 700, marginBottom: "10px" }}>Tech Stack</div>
+            <div style={{ fontSize: "14px", color: galaxyTheme.starWhite, opacity: 0.8 }}>Laravel & Blade<br />Kotlin<br />JavaScript/TypeScript<br />React & Next.js</div>
           </div>
 
           <div style={{ background: `${galaxyTheme.hotMagenta}10`, borderRadius: "8px", padding: "20px", border: `1px solid ${galaxyTheme.hotMagenta}40` }}>
             <div style={{ color: galaxyTheme.hotMagenta, fontWeight: 700, marginBottom: "10px" }}>Interests</div>
-            <div style={{ fontSize: "14px", color: galaxyTheme.starWhite, opacity: 0.8 }}>Full-Stack Development<br />Linux & Networking<br />Cloud Deployment<br />Open Source</div>
+            <div style={{ fontSize: "14px", color: galaxyTheme.starWhite, opacity: 0.8 }}>Full-Stack Development<br />Mobile Apps<br />Database Design<br />Open Source</div>
           </div>
         </div>
       </div>
@@ -219,11 +219,11 @@ export function AboutSection() {
       <div style={{ background: `linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(255, 20, 147, 0.1))`, borderRadius: "12px", border: `2px solid ${galaxyTheme.neonCyan}40`, padding: "40px", zIndex: 5, boxShadow: `0 0 40px ${galaxyTheme.nebulaPink}20`, transform: `translateY(${parallax * 0.15}px)` }}>
         <h3 style={{ color: galaxyTheme.neonCyan, marginTop: 0, marginBottom: "20px" }}>Fun Facts</h3>
         <ul style={{ color: galaxyTheme.starWhite, opacity: 0.85, lineHeight: 2, listStyle: "none", padding: 0 }}>
-          <li>🎓 Third-year IT student</li>
-          <li>🏠 Built a Linux home lab</li>
-          <li>🔧 Love experimenting with new tech</li>
-          <li>📚 Always learning & documenting</li>
-          <li>🚀 Passionate about clean code</li>
+          <li>💻 Full-stack developer with 20+ projects</li>
+          <li>🚀 Expertise in Laravel, Kotlin, and JavaScript</li>
+          <li>📱 Built multiple mobile and web apps</li>
+          <li>🎓 Passionate learner & tech enthusiast</li>
+          <li>🔧 Love clean code & best practices</li>
         </ul>
       </div>
     </section>
