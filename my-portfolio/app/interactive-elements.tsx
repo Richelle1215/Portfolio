@@ -164,7 +164,7 @@ export function Header({ onNavigate }: { onNavigate?: (id: string) => void }) {
 export function HeroSection() {
   const parallax = useParallax(0.5);
   return (
-    <section id="home" style={{ minHeight: "100vh", display: "grid", gridTemplateColumns: "1fr", gap: "40px", alignItems: "center", padding: "100px 40px 60px", position: "relative", overflow: "hidden", marginTop: "60px" }}>
+    <section id="home" style={{ minHeight: "100vh", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "40px", alignItems: "center", padding: "100px 40px 60px", position: "relative", overflow: "hidden", marginTop: "60px" }}>
       <style>{`@keyframes slideInLeft { from { opacity: 0; transform: translateX(-50px); } to { opacity: 1; transform: translateX(0); } } @keyframes slideInRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } } @keyframes scaleIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } } @media (max-width: 768px) { section { grid-template-columns: 1fr !important; } }`}</style>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "20px", zIndex: 5, animation: "slideInLeft 0.8s ease-out", transform: `translateY(${parallax * 0.3}px)` }}>
@@ -173,6 +173,20 @@ export function HeroSection() {
         <div style={{ display: "flex", gap: "16px", marginTop: "20px", flexWrap: "wrap" }}>
           <a href="#projects" style={{ padding: "12px 32px", background: `linear-gradient(135deg, ${galaxyTheme.neonCyan}, ${galaxyTheme.cosmicBlue})`, color: galaxyTheme.darkVoid, border: "none", borderRadius: "6px", cursor: "pointer", fontWeight: 700, fontSize: "14px", transition: "all 0.3s ease", boxShadow: `0 0 20px ${galaxyTheme.neonCyan}`, textDecoration: "none", display: "inline-block" }} onMouseEnter={(e) => { e.currentTarget.style.boxShadow = `0 0 30px ${galaxyTheme.neonCyan}, 0 0 40px ${galaxyTheme.cosmicBlue}`; e.currentTarget.style.transform = "translateY(-2px)"; }} onMouseLeave={(e) => { e.currentTarget.style.boxShadow = `0 0 20px ${galaxyTheme.neonCyan}`; e.currentTarget.style.transform = "translateY(0)"; }}>View Projects</a>
         </div>
+      </div>
+
+      <div style={{ position: "relative", height: "500px", display: "flex", alignItems: "center", justifyContent: "center", animation: "slideInRight 0.8s ease-out", transform: `translateY(${parallax * 0.2}px)` }}>
+        <img 
+          src="/ID.png" 
+          alt="Developer ID" 
+          style={{ 
+            width: "100%", 
+            height: "100%", 
+            objectFit: "contain", 
+            zIndex: 2,
+            mixBlendMode: "screen"
+          }} 
+        />
       </div>
     </section>
   );
