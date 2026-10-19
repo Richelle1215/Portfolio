@@ -164,7 +164,7 @@ export function Header({ onNavigate }: { onNavigate?: (id: string) => void }) {
 export function HeroSection() {
   const parallax = useParallax(0.5);
   return (
-    <section id="home" style={{ minHeight: "100vh", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "40px", alignItems: "center", padding: "100px 40px 60px", position: "relative", overflow: "hidden", marginTop: "60px" }}>
+    <section id="home" style={{ minHeight: "100vh", display: "grid", gridTemplateColumns: "1fr", gap: "40px", alignItems: "center", padding: "100px 40px 60px", position: "relative", overflow: "hidden", marginTop: "60px" }}>
       <style>{`@keyframes slideInLeft { from { opacity: 0; transform: translateX(-50px); } to { opacity: 1; transform: translateX(0); } } @keyframes slideInRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } } @keyframes scaleIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } } @media (max-width: 768px) { section { grid-template-columns: 1fr !important; } }`}</style>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "20px", zIndex: 5, animation: "slideInLeft 0.8s ease-out", transform: `translateY(${parallax * 0.3}px)` }}>
@@ -173,39 +173,6 @@ export function HeroSection() {
         <div style={{ display: "flex", gap: "16px", marginTop: "20px", flexWrap: "wrap" }}>
           <a href="#projects" style={{ padding: "12px 32px", background: `linear-gradient(135deg, ${galaxyTheme.neonCyan}, ${galaxyTheme.cosmicBlue})`, color: galaxyTheme.darkVoid, border: "none", borderRadius: "6px", cursor: "pointer", fontWeight: 700, fontSize: "14px", transition: "all 0.3s ease", boxShadow: `0 0 20px ${galaxyTheme.neonCyan}`, textDecoration: "none", display: "inline-block" }} onMouseEnter={(e) => { e.currentTarget.style.boxShadow = `0 0 30px ${galaxyTheme.neonCyan}, 0 0 40px ${galaxyTheme.cosmicBlue}`; e.currentTarget.style.transform = "translateY(-2px)"; }} onMouseLeave={(e) => { e.currentTarget.style.boxShadow = `0 0 20px ${galaxyTheme.neonCyan}`; e.currentTarget.style.transform = "translateY(0)"; }}>View Projects</a>
         </div>
-      </div>
-
-      <div style={{ position: "relative", height: "500px", display: "flex", alignItems: "center", justifyContent: "center", animation: "slideInRight 0.8s ease-out", transform: `translateY(${parallax * 0.2}px)` }}>
-        {/* Lace background - offset to the back */}
-        <div style={{ 
-          position: "absolute", 
-          width: "280px", 
-          height: "380px", 
-          backgroundImage: "url('/lace.png')", 
-          backgroundSize: "cover", 
-          backgroundPosition: "center",
-          borderRadius: "16px",
-          zIndex: 1,
-          top: "40px",
-          right: "-20px",
-          boxShadow: `0 20px 60px rgba(255, 20, 147, 0.3)`
-        }} />
-        
-        {/* Photo on top - main focal point */}
-        <img 
-          src="/myphoto.png" 
-          alt="Richelle Mendez" 
-          style={{ 
-            width: "320px", 
-            height: "400px", 
-            objectFit: "cover", 
-            borderRadius: "16px", 
-            zIndex: 2,
-            boxShadow: `0 0 50px ${galaxyTheme.neonCyan}50, 0 0 80px ${galaxyTheme.nebulaPink}40`,
-            position: "relative",
-            left: "30px"
-          }} 
-        />
       </div>
     </section>
   );
@@ -359,36 +326,49 @@ export function ExperienceSection() {
 
 export function SwingingIDCard() {
   return (
-    <div style={{ position: "relative", marginTop: "90px", animation: "swing 3s ease-in-out infinite", transformOrigin: "top center" }}>
-      <style>{`
-        @keyframes swing {
-          0%, 100% { transform: rotate(-9deg); }
-          50% { transform: rotate(9deg); }
-        }
-      `}</style>
-      
-      {/* String */}
-      <div style={{ position: "absolute", width: "3px", height: "100px", background: "linear-gradient(#b8c7e8, #505a83)", top: "-100px", left: "50%", transform: "translateX(-50%)" }} />
-      
-      {/* Card */}
-      <div style={{ width: "260px", minHeight: "380px", padding: "28px 20px", border: `2px solid #39436c`, borderRadius: "20px", color: "white", textAlign: "center", background: "linear-gradient(145deg, #0f1628, #1a2d4a)", boxShadow: "0 20px 60px rgba(0,0,0,0.6)" }}>
-        <small style={{ color: galaxyTheme.neonCyan, fontWeight: 700, letterSpacing: "2px", fontSize: "12px" }}>PERSONAL ID</small>
+    <section id="id-card" style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "100px 40px", position: "relative", overflow: "hidden", background: "transparent" }}>
+      <div style={{ position: "relative", animation: "swing 3s ease-in-out infinite", transformOrigin: "top center" }}>
+        <style>{`
+          @keyframes swing {
+            0%, 100% { transform: rotate(-9deg); }
+            50% { transform: rotate(9deg); }
+          }
+        `}</style>
         
-        {/* Photo Container */}
-        <div style={{ width: "180px", height: "200px", margin: "20px auto", borderRadius: "14px", background: "linear-gradient(135deg, #06f9ff20, #ff006e20)", border: `2px solid ${galaxyTheme.neonCyan}60`, overflow: "hidden", boxShadow: `0 0 30px ${galaxyTheme.neonCyan}40` }}>
-          <img 
-            src="/myphoto.png" 
-            alt="Richelle Mendez" 
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-          />
+        {/* Lanyard/String */}
+        <div style={{ position: "absolute", width: "25px", height: "120px", background: "linear-gradient(180deg, #1a3a52 0%, #0d1f2d 100%)", top: "-120px", left: "50%", transform: "translateX(-50%)", borderRadius: "4px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ width: "100%", height: "100%", background: "linear-gradient(90deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%)", borderRadius: "4px", padding: "8px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "20px", fontSize: "12px", color: "#8fa3c7", fontWeight: 600, textAlign: "center", lineHeight: 1.2 }}>
+            <span style={{ fontSize: "20px" }}>🔐</span>
+            <div style={{ writingMode: "vertical-rl", transform: "rotate(180deg)", fontSize: "10px", letterSpacing: "1px" }}>DEVELOPER ID</div>
+          </div>
         </div>
+
+        {/* Metal Clip */}
+        <div style={{ position: "absolute", width: "28px", height: "18px", background: "linear-gradient(180deg, #c0c0c0 0%, #a8a8a8 50%, #909090 100%)", top: "-5px", left: "50%", transform: "translateX(-50%)", borderRadius: "2px", boxShadow: "0 2px 5px rgba(0,0,0,0.5)", border: "1px solid #808080" }} />
         
-        <h2 style={{ fontSize: "22px", margin: "20px 0 8px", color: galaxyTheme.starWhite, fontWeight: 800 }}>Richelle Mendez</h2>
-        <p style={{ color: "#8fa3c7", fontSize: "14px", margin: "0 0 20px", fontWeight: 500 }}>Full-Stack Developer</p>
-        
-        <span style={{ display: "inline-block", padding: "10px 18px", borderRadius: "22px", background: "linear-gradient(135deg, #5346e8, #7c6ef5)", fontSize: "13px", fontWeight: 700, color: "white", boxShadow: `0 4px 15px #5346e840` }}>AVAILABLE FOR WORK</span>
+        {/* Card */}
+        <div style={{ width: "280px", height: "420px", padding: "0", border: "none", borderRadius: "24px", color: "white", textAlign: "center", background: "linear-gradient(135deg, #0d4a6b 0%, #1a6a8f 50%, #0d5a7f 100%)", boxShadow: "0 20px 60px rgba(0,0,0,0.8), 0 0 40px rgba(6, 249, 255, 0.2)", overflow: "hidden", position: "relative" }}>
+          
+          {/* Background tech pattern - subtle */}
+          <div style={{ position: "absolute", top: "40px", right: "-20px", width: "200px", height: "200px", opacity: 0.15, background: "radial-gradient(circle, #06f9ff 1px, transparent 1px)", backgroundSize: "20px 20px", pointerEvents: "none" }} />
+          
+          {/* Photo Container */}
+          <div style={{ width: "100%", height: "280px", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
+            <img 
+              src="/myphoto.png" 
+              alt="Richelle Mendez" 
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
+          </div>
+          
+          {/* Name Section */}
+          <div style={{ padding: "20px", position: "relative", zIndex: 2 }}>
+            <h2 style={{ fontSize: "32px", margin: "10px 0 0", color: galaxyTheme.starWhite, fontWeight: 900, letterSpacing: "1px", textShadow: "0 2px 10px rgba(0,0,0,0.5)" }}>RICHELLE</h2>
+            <p style={{ color: "#a8d5e8", fontSize: "12px", margin: "8px 0 0", fontWeight: 500, letterSpacing: "0.5px" }}>Full-Stack Developer</p>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
 
