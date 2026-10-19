@@ -6,6 +6,7 @@ import {
   ProjectsSection,
   ExperienceSection,
   ContactSection,
+  SwingingIDCard,
   CursorSpotlight,
   ScrollIndicator,
 } from "./interactive-elements";
@@ -131,6 +132,7 @@ export default function Home() {
         <ProjectsSection />
         <ExperienceSection />
         <ContactSection />
+        <SwingingIDCard />
       </div>
     </main>
   );

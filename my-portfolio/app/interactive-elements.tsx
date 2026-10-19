@@ -357,6 +357,41 @@ export function ExperienceSection() {
   );
 }
 
+export function SwingingIDCard() {
+  return (
+    <div style={{ position: "relative", marginTop: "90px", animation: "swing 3s ease-in-out infinite", transformOrigin: "top center" }}>
+      <style>{`
+        @keyframes swing {
+          0%, 100% { transform: rotate(-9deg); }
+          50% { transform: rotate(9deg); }
+        }
+      `}</style>
+      
+      {/* String */}
+      <div style={{ position: "absolute", width: "3px", height: "100px", background: "linear-gradient(#b8c7e8, #505a83)", top: "-100px", left: "50%", transform: "translateX(-50%)" }} />
+      
+      {/* Card */}
+      <div style={{ width: "260px", minHeight: "380px", padding: "28px 20px", border: `2px solid #39436c`, borderRadius: "20px", color: "white", textAlign: "center", background: "linear-gradient(145deg, #0f1628, #1a2d4a)", boxShadow: "0 20px 60px rgba(0,0,0,0.6)" }}>
+        <small style={{ color: galaxyTheme.neonCyan, fontWeight: 700, letterSpacing: "2px", fontSize: "12px" }}>PERSONAL ID</small>
+        
+        {/* Photo Container */}
+        <div style={{ width: "180px", height: "200px", margin: "20px auto", borderRadius: "14px", background: "linear-gradient(135deg, #06f9ff20, #ff006e20)", border: `2px solid ${galaxyTheme.neonCyan}60`, overflow: "hidden", boxShadow: `0 0 30px ${galaxyTheme.neonCyan}40` }}>
+          <img 
+            src="/myphoto.png" 
+            alt="Richelle Mendez" 
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
+        </div>
+        
+        <h2 style={{ fontSize: "22px", margin: "20px 0 8px", color: galaxyTheme.starWhite, fontWeight: 800 }}>Richelle Mendez</h2>
+        <p style={{ color: "#8fa3c7", fontSize: "14px", margin: "0 0 20px", fontWeight: 500 }}>Full-Stack Developer</p>
+        
+        <span style={{ display: "inline-block", padding: "10px 18px", borderRadius: "22px", background: "linear-gradient(135deg, #5346e8, #7c6ef5)", fontSize: "13px", fontWeight: 700, color: "white", boxShadow: `0 4px 15px #5346e840` }}>AVAILABLE FOR WORK</span>
+      </div>
+    </div>
+  );
+}
+
 export function ContactSection() {
   const { ref, isVisible } = useScrollAnimation();
 
