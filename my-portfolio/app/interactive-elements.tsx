@@ -147,7 +147,7 @@ export function Header({ onNavigate }: { onNavigate?: (id: string) => void }) {
           <span style={{ color: "#ffcc00" }}>●</span>
           <span style={{ color: "#00ff66" }}>●</span>
         </div>
-        <span style={{ color: galaxyTheme.neonCyan }}>RICHELLE.DEV</span>
+        <span style={{ color: galaxyTheme.neonCyan }}>...</span>
       </div>
 
       <nav style={{ display: "flex", alignItems: "center", gap: 30, fontSize: 13, letterSpacing: "1px", textTransform: "uppercase", flexWrap: "wrap" }}>
@@ -175,13 +175,37 @@ export function HeroSection() {
         </div>
       </div>
 
-      <div style={{ position: "relative", height: "400px", display: "flex", alignItems: "center", justifyContent: "center", animation: "slideInRight 0.8s ease-out", transform: `translateY(${parallax * 0.2}px)` }}>
-        <div style={{ width: "100%", height: "100%", background: `linear-gradient(135deg, rgba(255, 20, 147, 0.1), rgba(255, 20, 147, 0.2))`, borderRadius: "12px", border: `2px solid ${galaxyTheme.neonCyan}40`, display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden", boxShadow: `0 0 40px ${galaxyTheme.nebulaPink}30` }}>
-          <div style={{ fontSize: "80px", opacity: 0.5, animation: "scaleIn 1s ease-out" }}>👨‍💻</div>
-          <div style={{ position: "absolute", width: "80px", height: "80px", background: galaxyTheme.starWhite, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", transition: "all 0.3s ease", boxShadow: `0 10px 40px rgba(245, 240, 255, 0.3)` }} onMouseEnter={(e) => { e.currentTarget.style.transform = "scale(1.1)"; }} onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1)"; }}>
-            <div style={{ width: 0, height: 0, borderLeft: "30px solid #000", borderTop: "20px solid transparent", borderBottom: "20px solid transparent", marginLeft: "6px" }} />
-          </div>
-        </div>
+      <div style={{ position: "relative", height: "500px", display: "flex", alignItems: "center", justifyContent: "center", animation: "slideInRight 0.8s ease-out", transform: `translateY(${parallax * 0.2}px)` }}>
+        {/* Lace background - offset to the back */}
+        <div style={{ 
+          position: "absolute", 
+          width: "280px", 
+          height: "380px", 
+          backgroundImage: "url('/lace.png')", 
+          backgroundSize: "cover", 
+          backgroundPosition: "center",
+          borderRadius: "16px",
+          zIndex: 1,
+          top: "40px",
+          right: "-20px",
+          boxShadow: `0 20px 60px rgba(255, 20, 147, 0.3)`
+        }} />
+        
+        {/* Photo on top - main focal point */}
+        <img 
+          src="/myphoto.png" 
+          alt="Richelle Mendez" 
+          style={{ 
+            width: "320px", 
+            height: "400px", 
+            objectFit: "cover", 
+            borderRadius: "16px", 
+            zIndex: 2,
+            boxShadow: `0 0 50px ${galaxyTheme.neonCyan}50, 0 0 80px ${galaxyTheme.nebulaPink}40`,
+            position: "relative",
+            left: "30px"
+          }} 
+        />
       </div>
     </section>
   );
