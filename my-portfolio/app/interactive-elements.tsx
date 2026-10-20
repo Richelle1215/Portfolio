@@ -92,7 +92,7 @@ export function ScrollIndicator() {
   if (!isVisible) return null;
 
   return (
-    <div style={{ position: "fixed", bottom: "30px", right: "40px", zIndex: 100, animation: "bounce 2s ease-in-out infinite" }}>
+    <div className="scroll-indicator" style={{ position: "fixed", bottom: "30px", right: "40px", zIndex: 100, animation: "bounce 2s ease-in-out infinite" }}>
       <style>{`@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }`}</style>
       <div style={{ width: "30px", height: "30px", border: `2px solid ${galaxyTheme.neonCyan}`, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", color: galaxyTheme.neonCyan, fontSize: "18px", boxShadow: `0 0 12px ${galaxyTheme.neonCyan}` }}>∨</div>
     </div>
