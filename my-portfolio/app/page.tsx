@@ -11,15 +11,15 @@ import {
 } from "./interactive-elements";
 
 const galaxyTheme = {
-  darkVoid: "#0a0015",
-  deepPurple: "#1a0033",
+  darkVoid: "#090711",
+  deepPurple: "#180d2b",
   vividPurple: "#7c3aed",
   neonCyan: "#06f9ff",
   hotMagenta: "#ff006e",
   cosmicBlue: "#0099ff",
   starWhite: "#f5f0ff",
   nebulaPink: "#ff1493",
-  deepBlue: "#001a4d",
+  deepBlue: "#11143b",
 };
 
 export default function Home() {
@@ -28,15 +28,14 @@ export default function Home() {
       style={{
         background: `linear-gradient(90deg, 
           ${galaxyTheme.darkVoid} 0%,
-          ${galaxyTheme.deepPurple} 20%,
-          ${galaxyTheme.deepBlue} 40%,
-          ${galaxyTheme.darkVoid} 60%,
-          #1a0000 80%,
-          #330000 100%)`,
+          ${galaxyTheme.deepPurple} 22%,
+          ${galaxyTheme.deepBlue} 46%,
+          #100b1c 68%,
+          #1b0914 100%)`,
         backgroundAttachment: "fixed",
         color: galaxyTheme.starWhite,
         minHeight: "100vh",
-        fontFamily: 'Arial, "Helvetica Neue", sans-serif',
+        fontFamily: "var(--font-geist-sans), sans-serif",
         position: "relative",
         overflow: "hidden",
       }}
@@ -56,4 +55,3 @@ export default function Home() {
     </main>
   );
 }
-

@@ -140,19 +140,42 @@ export function Header({ onNavigate }: { onNavigate?: (id: string) => void }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <header style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 40px", position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, backdropFilter: "blur(10px)", background: `rgba(10, 0, 21, 0.95)`, borderBottom: `1px solid ${galaxyTheme.neonCyan}40` }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 18, fontWeight: 700, color: galaxyTheme.starWhite, letterSpacing: "2px" }}>
-        <div style={{ display: "flex", gap: "4px" }}>
+    <header className="site-header">
+      <div className="site-mark" aria-label="Richelle's portfolio">
+        <div className="site-mark__dots" aria-hidden="true">
           <span style={{ color: "#ff3366" }}>●</span>
           <span style={{ color: "#ffcc00" }}>●</span>
           <span style={{ color: "#00ff66" }}>●</span>
         </div>
-        <span style={{ color: galaxyTheme.neonCyan }}>...</span>
       </div>
 
-      <nav style={{ display: "flex", alignItems: "center", gap: 30, fontSize: 13, letterSpacing: "1px", textTransform: "uppercase", flexWrap: "wrap" }}>
+      <button
+        type="button"
+        className="site-menu-toggle"
+        aria-expanded={isMobileMenuOpen}
+        aria-controls="site-navigation"
+        aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+        onClick={() => setIsMobileMenuOpen((isOpen) => !isOpen)}
+      >
+        <span />
+        <span />
+        <span />
+      </button>
+
+      <nav id="site-navigation" className={`site-nav${isMobileMenuOpen ? " is-open" : ""}`} aria-label="Main navigation">
         {navItems.map((item) => (
-          <a key={item} href={`#${item.toLowerCase()}`} onClick={(e) => { e.preventDefault(); onNavigate?.(item.toLowerCase()); setIsMobileMenuOpen(false); }} style={{ color: item === "Home" ? galaxyTheme.starWhite : galaxyTheme.neonCyan, textDecoration: "none", cursor: "pointer", transition: "all 0.3s ease", padding: item === "Home" ? "8px 16px" : "0", border: item === "Home" ? `1px solid ${galaxyTheme.starWhite}` : "none", borderRadius: "6px" }} onMouseEnter={(e) => { if (item !== "Home") e.currentTarget.style.color = galaxyTheme.hotMagenta; }} onMouseLeave={(e) => { if (item !== "Home") e.currentTarget.style.color = galaxyTheme.neonCyan; }}>
+          <a
+            key={item}
+            href={`#${item.toLowerCase()}`}
+            className={item === "Home" ? "site-nav__link is-home" : "site-nav__link"}
+            onClick={(event) => {
+              if (onNavigate) {
+                event.preventDefault();
+                onNavigate(item.toLowerCase());
+              }
+              setIsMobileMenuOpen(false);
+            }}
+          >
             {item}
           </a>
         ))}
@@ -162,30 +185,27 @@ export function Header({ onNavigate }: { onNavigate?: (id: string) => void }) {
 }
 
 export function HeroSection() {
-  const parallax = useParallax(0.5);
   return (
-    <section id="home" style={{ minHeight: "100vh", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "40px", alignItems: "center", padding: "100px 40px 60px", position: "relative", overflow: "hidden", marginTop: "60px" }}>
-      <style>{`@keyframes slideInLeft { from { opacity: 0; transform: translateX(-50px); } to { opacity: 1; transform: translateX(0); } } @keyframes slideInRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } } @keyframes scaleIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } } @media (max-width: 768px) { section { grid-template-columns: 1fr !important; } }`}</style>
-
-      <div style={{ display: "flex", flexDirection: "column", gap: "20px", zIndex: 5, animation: "slideInLeft 0.8s ease-out", transform: `translateY(${parallax * 0.3}px)` }}>
-        <h1 style={{ fontSize: "clamp(3rem, 8vw, 6rem)", fontWeight: 900, color: galaxyTheme.starWhite, margin: 0, lineHeight: 0.9, letterSpacing: "-2px", textTransform: "uppercase" }}><TextReveal delay={0}>I&apos;m Richelle</TextReveal></h1>
-        <p style={{ fontSize: "16px", color: galaxyTheme.starWhite, opacity: 0.7, lineHeight: 1.8, maxWidth: "500px", letterSpacing: "0.5px" }}>Full-stack developer passionate about creating innovative solutions. I build web and mobile applications using modern technologies. Welcome to my portfolio where creativity meets code.</p>
-        <div style={{ display: "flex", gap: "16px", marginTop: "20px", flexWrap: "wrap" }}>
-          <a href="#projects" style={{ padding: "12px 32px", background: `linear-gradient(135deg, ${galaxyTheme.neonCyan}, ${galaxyTheme.cosmicBlue})`, color: galaxyTheme.darkVoid, border: "none", borderRadius: "6px", cursor: "pointer", fontWeight: 700, fontSize: "14px", transition: "all 0.3s ease", boxShadow: `0 0 20px ${galaxyTheme.neonCyan}`, textDecoration: "none", display: "inline-block" }} onMouseEnter={(e) => { e.currentTarget.style.boxShadow = `0 0 30px ${galaxyTheme.neonCyan}, 0 0 40px ${galaxyTheme.cosmicBlue}`; e.currentTarget.style.transform = "translateY(-2px)"; }} onMouseLeave={(e) => { e.currentTarget.style.boxShadow = `0 0 20px ${galaxyTheme.neonCyan}`; e.currentTarget.style.transform = "translateY(0)"; }}>View Projects</a>
+    <section id="home" className="hero">
+      <div className="hero-copy">
+        <h1 className="hero-title" aria-label="I'm Richelle">
+          <span>I&apos;m</span>
+          <span>Richelle</span>
+        </h1>
+        <p className="hero-intro">
+          Full-stack developer passionate about creating innovative solutions. I build web and mobile applications using modern technologies. Welcome to my portfolio where creativity meets code.
+        </p>
+        <div className="hero-actions">
+          <a className="hero-cta" href="#projects">View Projects</a>
         </div>
       </div>
 
-      <div style={{ position: "relative", height: "500px", display: "flex", alignItems: "center", justifyContent: "center", animation: "slideInRight 0.8s ease-out", transform: `translateY(${parallax * 0.2}px)` }}>
-        <img 
-          src="/ID.png" 
-          alt="Developer ID" 
-          style={{ 
-            width: "100%", 
-            height: "100%", 
-            objectFit: "contain", 
-            zIndex: 2,
-            mixBlendMode: "screen"
-          }} 
+      <div className="hero-visual" aria-label="Richelle's developer ID card">
+        <div className="hero-lanyard" aria-hidden="true" />
+        <img
+          className="hero-id-card"
+          src="/ID.png"
+          alt="Richelle's developer ID card, showing her portrait and computer studies lanyard"
         />
       </div>
     </section>
@@ -197,13 +217,13 @@ export function AboutSection() {
   const parallax = useParallax(0.2);
 
   return (
-    <section id="about" ref={ref} style={{ minHeight: "100vh", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "60px", alignItems: "center", padding: "100px 40px", position: "relative", overflow: "hidden", opacity: isVisible ? 1 : 0, transform: isVisible ? `translateY(0)` : "translateY(30px)", transition: "all 0.8s ease-out" }}>
+    <section id="about" ref={ref} className="about-section" style={{ minHeight: "100vh", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "60px", alignItems: "center", padding: "100px 40px", position: "relative", opacity: isVisible ? 1 : 0, transform: isVisible ? `translateY(0)` : "translateY(30px)", transition: "all 0.8s ease-out" }}>
       <div style={{ zIndex: 5, transform: `translateY(${parallax * 0.1}px)` }}>
         <h2 style={{ fontSize: "clamp(2.5rem, 6vw, 4rem)", fontWeight: 900, color: galaxyTheme.starWhite, margin: "0 0 20px", letterSpacing: "-1px" }}><TextReveal>About Me</TextReveal></h2>
         <div style={{ fontSize: "14px", color: galaxyTheme.neonCyan, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "20px", fontWeight: 600 }}>• Full-Stack Developer</div>
         <p style={{ fontSize: "16px", color: galaxyTheme.starWhite, opacity: 0.85, lineHeight: 1.8, marginBottom: "20px" }}>I&apos;m a passionate full-stack developer with expertise in web and mobile development. I specialize in building scalable applications using Laravel, Blade, Kotlin, and modern JavaScript frameworks. I love crafting elegant solutions to complex problems and contributing to open-source projects.</p>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginTop: "40px" }}>
+        <div className="about-facts" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginTop: "40px" }}>
           <div style={{ background: `${galaxyTheme.neonCyan}10`, borderRadius: "8px", padding: "20px", border: `1px solid ${galaxyTheme.neonCyan}40` }}>
             <div style={{ color: galaxyTheme.neonCyan, fontWeight: 700, marginBottom: "10px" }}>Tech Stack</div>
             <div style={{ fontSize: "14px", color: galaxyTheme.starWhite, opacity: 0.8 }}>Laravel & Blade<br />Kotlin<br />JavaScript/TypeScript<br />React & Next.js</div>
@@ -216,7 +236,7 @@ export function AboutSection() {
         </div>
       </div>
 
-      <div style={{ background: `linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(255, 20, 147, 0.1))`, borderRadius: "12px", border: `2px solid ${galaxyTheme.neonCyan}40`, padding: "40px", zIndex: 5, boxShadow: `0 0 40px ${galaxyTheme.nebulaPink}20`, transform: `translateY(${parallax * 0.15}px)` }}>
+      <div className="about-fun-facts" style={{ background: `linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(255, 20, 147, 0.1))`, borderRadius: "12px", border: `2px solid ${galaxyTheme.neonCyan}40`, padding: "40px", zIndex: 5, boxShadow: `0 0 40px ${galaxyTheme.nebulaPink}20`, transform: `translateY(${parallax * 0.15}px)` }}>
         <h3 style={{ color: galaxyTheme.neonCyan, marginTop: 0, marginBottom: "20px" }}>Fun Facts</h3>
         <ul style={{ color: galaxyTheme.starWhite, opacity: 0.85, lineHeight: 2, listStyle: "none", padding: 0 }}>
           <li>💻 Full-stack developer with 20+ projects</li>
@@ -273,12 +293,12 @@ export function ProjectsSection() {
   ];
 
   return (
-    <section id="projects" ref={ref} style={{ minHeight: "100vh", padding: "100px 40px", position: "relative", overflow: "hidden", opacity: isVisible ? 1 : 0, transform: isVisible ? "translateY(0)" : "translateY(30px)", transition: "all 0.8s ease-out" }}>
+    <section id="projects" ref={ref} className="projects-section" style={{ minHeight: "100vh", padding: "100px 40px", position: "relative", opacity: isVisible ? 1 : 0, transform: isVisible ? "translateY(0)" : "translateY(30px)", transition: "all 0.8s ease-out" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto", zIndex: 5, position: "relative" }}>
         <h2 style={{ fontSize: "clamp(2.5rem, 6vw, 4rem)", fontWeight: 900, color: galaxyTheme.starWhite, margin: "0 0 20px", letterSpacing: "-1px", textAlign: "center" }}><TextReveal>Projects</TextReveal></h2>
         <div style={{ fontSize: "14px", color: galaxyTheme.neonCyan, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "40px", fontWeight: 600, textAlign: "center" }}>• Recent Work & Case Studies</div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px" }}>
+        <div className="projects-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px" }}>
           {projects.map((project, idx) => (
             <div key={project.title} style={{ background: `linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(255, 20, 147, 0.05))`, border: `1px solid ${galaxyTheme.neonCyan}40`, borderRadius: "12px", overflow: "hidden", cursor: "pointer", transition: "all 0.3s ease", boxShadow: `0 0 20px ${galaxyTheme.nebulaPink}20`, opacity: isVisible ? 1 : 0, animation: isVisible ? `slideUp 0.6s ease-out ${idx * 0.1}s forwards` : "none" }} onMouseEnter={(e) => { e.currentTarget.style.borderColor = galaxyTheme.neonCyan; e.currentTarget.style.boxShadow = `0 0 30px ${galaxyTheme.neonCyan}40`; e.currentTarget.style.transform = "translateY(-8px)"; }} onMouseLeave={(e) => { e.currentTarget.style.borderColor = `${galaxyTheme.neonCyan}40`; e.currentTarget.style.boxShadow = `0 0 20px ${galaxyTheme.nebulaPink}20`; e.currentTarget.style.transform = "translateY(0)"; }}>
               <div style={{ height: "200px", background: `linear-gradient(135deg, ${galaxyTheme.deepPurple}, ${galaxyTheme.deepBlue})`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "80px", borderBottom: `1px solid ${galaxyTheme.neonCyan}40`, filter: "drop-shadow(0 0 20px rgba(6, 249, 255, 0.3))" }}>{project.image}</div>
@@ -309,14 +329,14 @@ export function ExperienceSection() {
   ];
 
   return (
-    <section id="experience" ref={ref} style={{ minHeight: "100vh", padding: "100px 40px", position: "relative", overflow: "hidden", opacity: isVisible ? 1 : 0, transform: isVisible ? "translateY(0)" : "translateY(30px)", transition: "all 0.8s ease-out" }}>
+    <section id="experience" ref={ref} className="experience-section" style={{ minHeight: "100vh", padding: "100px 40px", position: "relative", opacity: isVisible ? 1 : 0, transform: isVisible ? "translateY(0)" : "translateY(30px)", transition: "all 0.8s ease-out" }}>
       <div style={{ maxWidth: "900px", margin: "0 auto", zIndex: 5, position: "relative" }}>
         <h2 style={{ fontSize: "clamp(2.5rem, 6vw, 4rem)", fontWeight: 900, color: galaxyTheme.starWhite, margin: "0 0 20px", letterSpacing: "-1px", textAlign: "center" }}><TextReveal>Experience</TextReveal></h2>
         <div style={{ fontSize: "14px", color: galaxyTheme.neonCyan, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "60px", fontWeight: 600, textAlign: "center" }}>• Work History & Timeline</div>
 
         <div style={{ position: "relative" }}>
           {experiences.map((exp, idx) => (
-            <div key={exp.title} style={{ display: "grid", gridTemplateColumns: "200px 1fr", gap: "40px", marginBottom: "60px", padding: "30px", background: `linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(255, 20, 147, 0.02))`, border: `1px solid ${galaxyTheme.neonCyan}30`, borderRadius: "12px", transition: "all 0.3s ease", opacity: isVisible ? 1 : 0, animation: isVisible ? `slideLeft 0.6s ease-out ${idx * 0.15}s forwards` : "none" }} onMouseEnter={(e) => { e.currentTarget.style.borderColor = galaxyTheme.neonCyan; e.currentTarget.style.boxShadow = `0 0 20px ${galaxyTheme.neonCyan}30`; }} onMouseLeave={(e) => { e.currentTarget.style.borderColor = `${galaxyTheme.neonCyan}30`; e.currentTarget.style.boxShadow = "none"; }}>
+            <div key={exp.title} className="experience-item" style={{ display: "grid", gridTemplateColumns: "200px 1fr", gap: "40px", marginBottom: "60px", padding: "30px", background: `linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(255, 20, 147, 0.02))`, border: `1px solid ${galaxyTheme.neonCyan}30`, borderRadius: "12px", transition: "all 0.3s ease", opacity: isVisible ? 1 : 0, animation: isVisible ? `slideLeft 0.6s ease-out ${idx * 0.15}s forwards` : "none" }} onMouseEnter={(e) => { e.currentTarget.style.borderColor = galaxyTheme.neonCyan; e.currentTarget.style.boxShadow = `0 0 20px ${galaxyTheme.neonCyan}30`; }} onMouseLeave={(e) => { e.currentTarget.style.borderColor = `${galaxyTheme.neonCyan}30`; e.currentTarget.style.boxShadow = "none"; }}>
               <div>
                 <div style={{ color: galaxyTheme.neonCyan, fontSize: "12px", fontWeight: 600, letterSpacing: "1px", textTransform: "uppercase", marginBottom: "8px" }}>{exp.period}</div>
                 <div style={{ color: galaxyTheme.hotMagenta, fontSize: "14px", fontWeight: 700 }}>{exp.company}</div>
