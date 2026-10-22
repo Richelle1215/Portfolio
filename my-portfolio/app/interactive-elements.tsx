@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 
 const galaxyTheme = {
   darkVoid: "#0a0015",
@@ -13,6 +13,8 @@ const galaxyTheme = {
   nebulaPink: "#ff1493",
   deepBlue: "#001a4d",
 };
+
+type ItemBounds = Pick<DOMRect, "left" | "right" | "top" | "bottom">;
 
 export function useScrollAnimation() {
   const [isVisible, setIsVisible] = useState(false);
@@ -185,8 +187,182 @@ export function Header({ onNavigate }: { onNavigate?: (id: string) => void }) {
 }
 
 export function HeroSection() {
+  const heroRef = useRef<HTMLElement>(null);
+  const hangerRef = useRef<HTMLDivElement>(null);
+  const dragRef = useRef<{
+    pointerId: number;
+    startX: number;
+    startY: number;
+    originX: number;
+    originY: number;
+    bounds: ItemBounds;
+  } | null>(null);
+  const offsetRef = useRef({ x: 0, y: 0 });
+  const [isReady, setIsReady] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+
+  useEffect(() => {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const enableDragging = () => setIsReady(true);
+    const entranceFallback = window.setTimeout(enableDragging, 2200);
+    const handleMotionPreferenceChange = (event: MediaQueryListEvent) => {
+      if (event.matches) {
+        window.clearTimeout(entranceFallback);
+        enableDragging();
+      }
+    };
+
+    if (reducedMotion.matches) {
+      window.clearTimeout(entranceFallback);
+      enableDragging();
+    }
+    reducedMotion.addEventListener("change", handleMotionPreferenceChange);
+
+    return () => {
+      window.clearTimeout(entranceFallback);
+      reducedMotion.removeEventListener("change", handleMotionPreferenceChange);
+    };
+  }, []);
+
+  const getItemBounds = () => {
+    const hanger = hangerRef.current;
+    const card = hanger?.querySelector(".hero-id-card");
+    const lanyard = hanger?.querySelector(".hero-lanyard");
+    if (!(card instanceof HTMLElement) || !(lanyard instanceof HTMLElement)) return null;
+
+    const cardBounds = card.getBoundingClientRect();
+    const lanyardBounds = lanyard.getBoundingClientRect();
+    return {
+      left: Math.min(cardBounds.left, lanyardBounds.left),
+      right: Math.max(cardBounds.right, lanyardBounds.right),
+      top: Math.min(cardBounds.top, lanyardBounds.top),
+      bottom: Math.max(cardBounds.bottom, lanyardBounds.bottom),
+    };
+  };
+
+  const getClampedOffset = (
+    x: number,
+    y: number,
+    bounds: ItemBounds,
+    originX: number,
+    originY: number,
+  ) => {
+    const heroBounds = heroRef.current?.getBoundingClientRect();
+    if (!heroBounds) return { x, y };
+
+    const headerBottom = document.querySelector(".site-header")?.getBoundingClientRect().bottom ?? 0;
+    const leftLimit = Math.max(heroBounds.left, 0);
+    const rightLimit = Math.min(heroBounds.right, window.innerWidth);
+    const topLimit = Math.max(heroBounds.top, headerBottom, 0);
+    const bottomLimit = heroBounds.bottom;
+    const baseLeft = bounds.left - originX;
+    const baseRight = bounds.right - originX;
+    const baseTop = bounds.top - originY;
+    const baseBottom = bounds.bottom - originY;
+    const clamp = (value: number, min: number, max: number) =>
+      Math.min(Math.max(value, min), Math.max(min, max));
+
+    return {
+      x: clamp(x, leftLimit - baseLeft, rightLimit - baseRight),
+      y: clamp(y, topLimit - baseTop, bottomLimit - baseBottom),
+    };
+  };
+
+  const applyOffset = (x: number, y: number, rotation: number) => {
+    const hanger = hangerRef.current;
+    if (!hanger) return;
+
+    offsetRef.current = { x, y };
+    hanger.style.setProperty("--hero-drag-x", `${x}px`);
+    hanger.style.setProperty("--hero-drag-y", `${y}px`);
+    hanger.style.setProperty("--hero-drag-rotation", `${rotation}deg`);
+  };
+
+  const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
+    if (!isReady || event.button !== 0 || dragRef.current) return;
+
+    const bounds = getItemBounds();
+    if (!bounds) return;
+
+    try {
+      event.currentTarget.setPointerCapture(event.pointerId);
+    } catch {
+      return;
+    }
+
+    dragRef.current = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      originX: offsetRef.current.x,
+      originY: offsetRef.current.y,
+      bounds,
+    };
+    setIsDragging(true);
+    event.preventDefault();
+  };
+
+  const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
+    const drag = dragRef.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+
+    const x = drag.originX + event.clientX - drag.startX;
+    const y = drag.originY + event.clientY - drag.startY;
+    const position = getClampedOffset(x, y, drag.bounds, drag.originX, drag.originY);
+    const rotation = Math.max(-7, Math.min(7, (event.clientX - drag.startX) * 0.035));
+    applyOffset(position.x, position.y, rotation);
+    event.preventDefault();
+  };
+
+  const finishPointerDrag = (event: PointerEvent<HTMLDivElement>) => {
+    const drag = dragRef.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+
+    dragRef.current = null;
+    applyOffset(offsetRef.current.x, offsetRef.current.y, 0);
+    setIsDragging(false);
+
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+  };
+
+  const handleLostPointerCapture = (event: PointerEvent<HTMLDivElement>) => {
+    if (dragRef.current?.pointerId !== event.pointerId) return;
+
+    dragRef.current = null;
+    applyOffset(offsetRef.current.x, offsetRef.current.y, 0);
+    setIsDragging(false);
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (!isReady) return;
+
+    const directions: Record<string, { x: number; y: number }> = {
+      ArrowLeft: { x: -1, y: 0 },
+      ArrowRight: { x: 1, y: 0 },
+      ArrowUp: { x: 0, y: -1 },
+      ArrowDown: { x: 0, y: 1 },
+    };
+    const direction = directions[event.key];
+    const bounds = getItemBounds();
+    if (!direction || !bounds) return;
+
+    event.preventDefault();
+    const distance = event.shiftKey ? 24 : 8;
+    const current = offsetRef.current;
+    const position = getClampedOffset(
+      current.x + direction.x * distance,
+      current.y + direction.y * distance,
+      bounds,
+      current.x,
+      current.y,
+    );
+    applyOffset(position.x, position.y, 0);
+  };
+
   return (
-    <section id="home" className="hero">
+    <section id="home" ref={heroRef} className="hero">
       <div className="hero-copy">
         <h1 className="hero-title" aria-label="I'm Richelle">
           <span>I&apos;m</span>
@@ -200,13 +376,35 @@ export function HeroSection() {
         </div>
       </div>
 
-      <div className="hero-visual" aria-label="Richelle's developer ID card">
-        <div className="hero-lanyard" aria-hidden="true" />
-        <img
-          className="hero-id-card"
-          src="/ID.png"
-          alt="Richelle's developer ID card, showing her portrait and computer studies lanyard"
-        />
+      <div className="hero-visual">
+        <div
+          ref={hangerRef}
+          className={`hero-hanger${isReady ? "" : " is-entering"}${isDragging ? " is-dragging" : ""}`}
+          role="group"
+          aria-roledescription="draggable item"
+          aria-label="Richelle's developer ID card. Drag to reposition; use arrow keys to move, or Shift plus arrow keys for larger steps."
+          aria-disabled={!isReady}
+          tabIndex={0}
+          onAnimationEnd={(event) => {
+            if (event.target === event.currentTarget && event.animationName === "hero-id-entrance") {
+              setIsReady(true);
+            }
+          }}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={finishPointerDrag}
+          onPointerCancel={finishPointerDrag}
+          onLostPointerCapture={handleLostPointerCapture}
+          onKeyDown={handleKeyDown}
+        >
+          <div className="hero-lanyard" aria-hidden="true" />
+          <img
+            className="hero-id-card"
+            src="/ID.png"
+            alt="Richelle's developer ID card, showing her portrait and computer studies lanyard"
+            draggable={false}
+          />
+        </div>
       </div>
     </section>
   );
