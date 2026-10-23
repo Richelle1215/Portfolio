@@ -16,8 +16,6 @@ const geistMono = Geist_Mono({
 
 
 
-
-
 export const metadata: Metadata = {
   title: "Richelle Mendez | Full-Stack Developer",
   description: "Explore Richelle Mendez's portfolio of full-stack web and mobile applications, projects, and experience.",
