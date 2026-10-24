@@ -542,6 +542,8 @@ section[id] {
     font-size: 11px;
   }
 
+  
+
   .hero-visual {
     --lanyard-width: clamp(160px, min(30.6vw, calc((100svh - 60px) * 0.8)), 210px);
     --lanyard-center: calc(var(--lanyard-width) / 2 - 1.5px);
