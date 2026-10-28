@@ -1,7 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
-import { ProjectPreview } from "./project-preview";
+import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
+import Link from "next/link";
+import { portfolioProjects } from "./portfolio-data";
 
 const galaxyTheme = {
   darkVoid: "#0a0015",
@@ -365,9 +366,15 @@ export function HeroSection() {
   return (
     <section id="home" ref={heroRef} className="hero">
       <div className="hero-copy">
-        <h1 className="hero-title" aria-label="I'm Richelle">
-          <span>I&apos;m</span>
-          <span>Richelle</span>
+        <h1 className="hero-title" aria-label="Hi, I am Richelle">
+          <span aria-hidden="true">HI, I AM</span>
+          <span className="hero-title__name" aria-hidden="true">
+            {"RICHELLE".split("").map((letter, index) => (
+              <span key={`${letter}-${index}`} style={{ animationDelay: `${index * 85}ms` }}>
+                {letter}
+              </span>
+            ))}
+          </span>
         </h1>
         <p className="hero-intro">
           Full-stack developer passionate about creating innovative solutions. I build web and mobile applications using modern technologies. Welcome to my portfolio where creativity meets code.
@@ -480,48 +487,44 @@ export function SkillsSection() {
   );
 }
 
-type PortfolioProject = {
-  id: string;
-  title: string;
-  description: string;
-  tags: string[];
-  image: string;
-  link: string;
-  details: string;
-};
-
-const projects: PortfolioProject[] = [
-  { id: "basic-ed", title: "BasicEd Library", description: "A Laravel starter welcome page, sign-in and registration flows, a minimal dashboard, profile editing, and staff approval management.", tags: ["Laravel", "Blade", "PHP"], image: "📚", link: "https://github.com/Richelle1215/BasicEd_Library", details: "Laravel starter & staff approval" },
-  { id: "smart-kitchen", title: "SmartKitchen", description: "A warm recipe-community homepage, recipe discovery filters, and seeded cuisine categories. Recipe listings are database-backed and empty in this view-only preview.", tags: ["Laravel", "Blade", "Recipes"], image: "🍳", link: "https://github.com/Richelle1215/SmartKitchen", details: "Recipe community" },
-  { id: "budget-tracker", title: "Budget Tracker", description: "Native Android finance manager recreated from its Jetpack Compose onboarding and dashboard. Additions stay in this temporary preview only.", tags: ["Kotlin", "Android", "Compose"], image: "💰", link: "https://github.com/Richelle1215/Budget-Tracker", details: "Android · Personal finance" },
-  { id: "hayst", title: "HAYST", description: "A separate red static marketplace landing page from the HAYST repository. It is not the nested LUMIÈRE jewelry store.", tags: ["HTML", "Static site"], image: "🎯", link: "https://github.com/Richelle1215/HAYST", details: "Static marketplace landing" },
-  { id: "pet-health", title: "PetHealthTracker", description: "Native Android app with four real Compose routes: robot home, pet BMI, five game cards, and a robot customization closet.", tags: ["Kotlin", "Android", "Compose"], image: "🐾", link: "https://github.com/Richelle1215/PetHealthTracker", details: "Android · Pet companion" },
-  { id: "lumiere", title: "LUMIÈRE Store", description: "A luxury jewelry storefront nested in HAYST. The standalone LARAVEL-E-COMMERCE repository contains only a README; the source UI lives in HAYST.", tags: ["Laravel", "Blade", "Jewelry"], image: "🛍️", link: "https://github.com/Richelle1215/HAYST/tree/main/LARAVEL_E-COMMERCE_PROJECT", details: "Nested Laravel storefront" },
-];
-
 export function ProjectsSection() {
   const { ref, isVisible } = useScrollAnimation();
-  const [activeProject, setActiveProject] = useState<PortfolioProject | null>(null);
-  const closePreview = useCallback(() => setActiveProject(null), []);
 
   return (
     <section id="projects" ref={ref} className={`projects-section${isVisible ? " is-visible" : ""}`} style={{ minHeight: "100vh", padding: "100px 40px", position: "relative", opacity: isVisible ? 1 : 0, transform: isVisible ? "translateY(0)" : "translateY(30px)", transition: "all 0.8s ease-out" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto", zIndex: 5, position: "relative" }}>
-        <h2 style={{ fontSize: "clamp(2.5rem, 6vw, 4rem)", fontWeight: 900, color: galaxyTheme.starWhite, margin: "0 0 20px", letterSpacing: "-1px", textAlign: "center" }}><TextReveal>Projects</TextReveal></h2>
-        <div style={{ fontSize: "14px", color: galaxyTheme.neonCyan, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "40px", fontWeight: 600, textAlign: "center" }}>• Source-faithful, view-only previews</div>
+        <div className="portfolio-showcase__heading">
+          <p className="certificate-eyebrow">Portfolio / 01</p>
+          <h2>Portfolio Showcase</h2>
+          <p>Explore my journey through projects, certifications, and technical expertise. Each project reflects a milestone in my continuous learning path.</p>
+        </div>
+        <nav className="portfolio-showcase__tabs" aria-label="Portfolio sections">
+          <a href="#projects" aria-current="location"><span aria-hidden="true">⌘</span>Projects</a>
+          <a href="#certificates"><span aria-hidden="true">♙</span>Certificates</a>
+          <a href="#skills"><span aria-hidden="true">✣</span>Tech Stack</a>
+        </nav>
         <div className="projects-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px" }}>
-          {projects.map((project, idx) => (
-            <article key={project.title} className="project-card" style={{ animationDelay: `${idx * 80}ms` }}>
-              <button className="project-card__link" type="button" onClick={() => setActiveProject(project)} aria-label={`Open ${project.title} in-page preview`}>
-                <span className="project-card__art" aria-hidden="true">{project.image}</span>
-                <span className="project-card__copy"><strong>{project.title}</strong><small>{project.details}</small><span className="project-card__description">{project.description}</span><span className="project-card__tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</span><span className="project-card__cta">Explore preview <span aria-hidden="true">↗</span></span></span>
-              </button>
-              <a className="project-card__source" href={project.link} target="_blank" rel="noopener noreferrer">View source repository <span aria-hidden="true">↗</span></a>
+          {portfolioProjects.map((project, idx) => (
+            <article key={project.slug} className="project-card" style={{ animationDelay: `${idx * 80}ms` }}>
+              <Link className="project-card__link" href={`/projects/${project.slug}`} aria-label={`View details for ${project.title}`}>
+                <span className={`project-card__art project-card__art--${project.slug}`} aria-hidden="true">
+                  <span>PROJECT / {String(idx + 1).padStart(2, "0")}</span>
+                  <strong>{project.title}</strong>
+                  <small>{project.category}</small>
+                </span>
+                <span className="project-card__copy">
+                  <strong>{project.title}</strong>
+                  <small>{project.category}</small>
+                  <span className="project-card__description">{project.description}</span>
+                  <span className="project-card__tags">{project.technologies.map((tag) => <span key={tag}>{tag}</span>)}</span>
+                  <span className="project-card__cta">Details <span aria-hidden="true">→</span></span>
+                </span>
+              </Link>
+              <a className="project-card__source" href={project.repository} target="_blank" rel="noopener noreferrer">GitHub repository <span aria-hidden="true">↗</span></a>
             </article>
           ))}
         </div>
       </div>
-      {activeProject && <ProjectPreview project={activeProject} onClose={closePreview} />}
     </section>
   );
 }

@@ -1,14 +1,44 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
-const certificates = Array.from({ length: 24 }, (_, index) => {
+const certificateFiles = [
+  "certificate-01.png",
+  "certificate-03.jpeg",
+  "certificate-05.png",
+  "certificate-07.jpeg",
+  "certificate-11.jpeg",
+  "certificate-12.png",
+  "certificate-17.png",
+  "certificate-21.png",
+  "certificate-24.png",
+  "certificate-26.png",
+  "certificate-28.png",
+  "certificate-33.png",
+  "certificate-37.png",
+  "certificate-39.jpeg",
+  "certificate-42.png",
+  "certificate-45.png",
+  "certificate-48.png",
+  "certificate-51.png",
+  "certificate-52.png",
+  "certificate-56.png",
+  "certificate-58.png",
+  "certificate-61.png",
+  "certificate-62.png",
+  "certificate-63.png",
+  "certificate-64.png",
+];
+
+const certificates = certificateFiles.map((filename, index) => {
   const number = String(index + 1).padStart(2, "0");
 
   return {
     number,
-    src: `/certificates/certificate-${number}.jpg`,
-    alt: `Certificate page ${number} from Richelle Mendez's certificate collection`,
+    filename,
+    src: `/certificates/${filename}`,
+    alt: `Certificate scan ${number} from Richelle Mendez's certificate collection`,
   };
 });
 
@@ -21,13 +51,22 @@ export function CertificateGallery() {
     () => certificates.map(() => "loading"),
   );
   const readyCount = assetStatuses.filter((status) => status === "ready").length;
+  const settledCount = assetStatuses.filter((status) => status !== "loading").length;
   const selectedCertificate = selectedIndex === null ? null : certificates[selectedIndex];
 
   useEffect(() => {
     const dialog = dialogRef.current;
-    if (!dialog || selectedIndex === null || dialog.open) return;
+    if (dialog && selectedIndex !== null && !dialog.open) dialog.showModal();
 
-    dialog.showModal();
+    const handleEscape = (event: globalThis.KeyboardEvent) => {
+      if (event.key === "Escape" && dialog?.open) {
+        event.preventDefault();
+        dialog.close();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape, true);
+    return () => document.removeEventListener("keydown", handleEscape, true);
   }, [selectedIndex]);
 
   const closeDialog = () => {
@@ -41,6 +80,13 @@ export function CertificateGallery() {
       const updated = [...current];
       updated[index] = status;
       return updated;
+    });
+  };
+
+  const moveSelection = (direction: -1 | 1) => {
+    setSelectedIndex((current) => {
+      if (current === null) return 0;
+      return (current + direction + certificates.length) % certificates.length;
     });
   };
 
@@ -94,13 +140,15 @@ export function CertificateGallery() {
               <h3>Certificate collection</h3>
             </div>
             <p className="certificate-collection__count">
-              {certificates.length} pages
+              {certificates.length} scans
             </p>
           </div>
-          <p className="certificate-collection__status" aria-live="polite">
+          <p className="certificate-collection__status">
             {readyCount === certificates.length
               ? "All certificate images are available."
-              : `${readyCount} of ${certificates.length} certificate images available. Images will appear here as the source files are added.`}
+              : settledCount < certificates.length
+                ? `Loading certificate images (${readyCount} of ${certificates.length} ready).`
+                : `${readyCount} of ${certificates.length} certificate images are available. See each card for any missing filename.`}
           </p>
 
           <div className="certificate-grid">
@@ -115,9 +163,11 @@ export function CertificateGallery() {
                       <span className="certificate-card__placeholder-mark">C</span>
                       <span>{isMissing ? "Image pending" : "Loading image"}</span>
                     </div>
-                    <img
+                    <Image
                       src={certificate.src}
                       alt={certificate.alt}
+                      fill
+                      sizes="(max-width: 600px) 50vw, (max-width: 900px) 33vw, 25vw"
                       loading="lazy"
                       onLoad={() => updateAssetStatus(index, "ready")}
                       onError={() => updateAssetStatus(index, "missing")}
@@ -139,7 +189,7 @@ export function CertificateGallery() {
                   </div>
                   {isMissing && (
                     <p className="certificate-card__filename">
-                      Expected: certificate-{certificate.number}.jpg
+                      Expected: {certificate.filename}
                     </p>
                   )}
                 </article>
@@ -154,6 +204,10 @@ export function CertificateGallery() {
         className="certificate-lightbox"
         aria-labelledby="certificate-dialog-title"
         onClose={() => setSelectedIndex(null)}
+        onCancel={(event) => {
+          event.preventDefault();
+          closeDialog();
+        }}
         onClick={(event) => {
           if (event.target === event.currentTarget) closeDialog();
         }}
@@ -180,21 +234,22 @@ export function CertificateGallery() {
               <button
                 type="button"
                 aria-label="Previous certificate"
-                onClick={() =>
-                  setSelectedIndex(
-                    (selectedIndex! - 1 + certificates.length) % certificates.length,
-                  )
-                }
+                onClick={() => moveSelection(-1)}
               >
                 <span aria-hidden="true">←</span>
               </button>
-              <img src={selectedCertificate.src} alt={selectedCertificate.alt} />
+              <div className="certificate-lightbox__image">
+                <Image
+                  src={selectedCertificate.src}
+                  alt={selectedCertificate.alt}
+                  fill
+                  sizes="(max-width: 600px) 85vw, 75vw"
+                />
+              </div>
               <button
                 type="button"
                 aria-label="Next certificate"
-                onClick={() =>
-                  setSelectedIndex((selectedIndex! + 1) % certificates.length)
-                }
+                onClick={() => moveSelection(1)}
               >
                 <span aria-hidden="true">→</span>
               </button>
