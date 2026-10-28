@@ -197,7 +197,7 @@ export function HeroSection() {
     originY: number;
     bounds: ItemBounds;
   } | null>(null);
-  const offsetRef = useRef({ x: 0, y: 0 });
+  const offsetRef = useRef({ x: 0, y: 0, rotation: 0 });
   const [isReady, setIsReady] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
 
@@ -272,7 +272,7 @@ export function HeroSection() {
     const hanger = hangerRef.current;
     if (!hanger) return;
 
-    offsetRef.current = { x, y };
+    offsetRef.current = { x, y, rotation };
     hanger.style.setProperty("--hero-drag-x", `${x}px`);
     hanger.style.setProperty("--hero-drag-y", `${y}px`);
     hanger.style.setProperty("--hero-drag-rotation", `${rotation}deg`);
@@ -319,7 +319,7 @@ export function HeroSection() {
     if (!drag || drag.pointerId !== event.pointerId) return;
 
     dragRef.current = null;
-    applyOffset(offsetRef.current.x, offsetRef.current.y, 0);
+    applyOffset(offsetRef.current.x, offsetRef.current.y, offsetRef.current.rotation);
     setIsDragging(false);
 
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
@@ -331,7 +331,7 @@ export function HeroSection() {
     if (dragRef.current?.pointerId !== event.pointerId) return;
 
     dragRef.current = null;
-    applyOffset(offsetRef.current.x, offsetRef.current.y, 0);
+    applyOffset(offsetRef.current.x, offsetRef.current.y, offsetRef.current.rotation);
     setIsDragging(false);
   };
 
