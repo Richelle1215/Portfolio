@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
+import { ProjectPreview } from "./project-preview";
 
 const galaxyTheme = {
   darkVoid: "#0a0015",
@@ -480,6 +481,7 @@ export function SkillsSection() {
 }
 
 type PortfolioProject = {
+  id: string;
   title: string;
   description: string;
   tags: string[];
@@ -489,33 +491,37 @@ type PortfolioProject = {
 };
 
 const projects: PortfolioProject[] = [
-  { title: "BasicEd Library", description: "School library inventory management system built with Laravel and Blade. Features book cataloging, patron management, borrowing/returning system, and reporting dashboard. Streamlines library operations for educational institutions.", tags: ["Laravel", "Blade", "MySQL", "PHP"], image: "📚", link: "https://github.com/Richelle1215/BasicEd_Library", details: "Library Management System" },
-  { title: "SmartKitchen", description: "AI-powered recipe sharing platform with intelligent recommendations. Built with Laravel backend and modern frontend. Users can discover recipes, share culinary creations, and get personalized suggestions based on preferences and available ingredients.", tags: ["Laravel", "Blade", "JavaScript", "MySQL"], image: "🍳", link: "https://github.com/Richelle1215/SmartKitchen", details: "Recipe Sharing & Discovery" },
-  { title: "Budget Tracker", description: "Personal finance tracker app built with Kotlin for Android. Track expenses, manage budgets, set financial goals, and visualize spending patterns. Helps users gain better control over their personal finances with intuitive categorization and reporting.", tags: ["Kotlin", "Android", "SQLite", "Java"], image: "💰", link: "https://github.com/Richelle1215/Budget-Tracker", details: "Personal Finance Manager" },
-  { title: "HAYST", description: "Large-scale full-stack application. Comprehensive project showcasing advanced development practices, complex business logic, and scalable architecture. Built with Laravel backend demonstrating professional-grade application development.", tags: ["Laravel", "Blade", "PHP", "MySQL"], image: "🎯", link: "https://github.com/Richelle1215/HAYST", details: "Full-Stack Application" },
-  { title: "PetHealthTracker", description: "Mobile app for tracking pet health records. Manage veterinary appointments, vaccinations, medications, and health history. Keep all your pet's medical information organized in one convenient place with reminders for important dates.", tags: ["Kotlin", "Android", "Java", "SQLite"], image: "🐾", link: "https://github.com/Richelle1215/PetHealthTracker", details: "Pet Health Management" },
-  { title: "E-Commerce Platform", description: "Full-featured e-commerce solution built with Laravel and Blade. Product catalog, shopping cart, order management, and payment integration. Modern design with responsive layout optimized for desktop and mobile shopping experiences.", tags: ["Laravel", "Blade", "MySQL", "PHP"], image: "🛍️", link: "https://github.com/Richelle1215/LARAVEL-E-COMMERCE", details: "E-Commerce Solution" },
+  { id: "basic-ed", title: "BasicEd Library", description: "A Laravel starter welcome page, sign-in and registration flows, a minimal dashboard, profile editing, and staff approval management.", tags: ["Laravel", "Blade", "PHP"], image: "📚", link: "https://github.com/Richelle1215/BasicEd_Library", details: "Laravel starter & staff approval" },
+  { id: "smart-kitchen", title: "SmartKitchen", description: "A warm recipe-community homepage, recipe discovery filters, and seeded cuisine categories. Recipe listings are database-backed and empty in this view-only preview.", tags: ["Laravel", "Blade", "Recipes"], image: "🍳", link: "https://github.com/Richelle1215/SmartKitchen", details: "Recipe community" },
+  { id: "budget-tracker", title: "Budget Tracker", description: "Native Android finance manager recreated from its Jetpack Compose onboarding and dashboard. Additions stay in this temporary preview only.", tags: ["Kotlin", "Android", "Compose"], image: "💰", link: "https://github.com/Richelle1215/Budget-Tracker", details: "Android · Personal finance" },
+  { id: "hayst", title: "HAYST", description: "A separate red static marketplace landing page from the HAYST repository. It is not the nested LUMIÈRE jewelry store.", tags: ["HTML", "Static site"], image: "🎯", link: "https://github.com/Richelle1215/HAYST", details: "Static marketplace landing" },
+  { id: "pet-health", title: "PetHealthTracker", description: "Native Android app with four real Compose routes: robot home, pet BMI, five game cards, and a robot customization closet.", tags: ["Kotlin", "Android", "Compose"], image: "🐾", link: "https://github.com/Richelle1215/PetHealthTracker", details: "Android · Pet companion" },
+  { id: "lumiere", title: "LUMIÈRE Store", description: "A luxury jewelry storefront nested in HAYST. The standalone LARAVEL-E-COMMERCE repository contains only a README; the source UI lives in HAYST.", tags: ["Laravel", "Blade", "Jewelry"], image: "🛍️", link: "https://github.com/Richelle1215/HAYST/tree/main/LARAVEL_E-COMMERCE_PROJECT", details: "Nested Laravel storefront" },
 ];
 
 export function ProjectsSection() {
   const { ref, isVisible } = useScrollAnimation();
+  const [activeProject, setActiveProject] = useState<PortfolioProject | null>(null);
+  const closePreview = useCallback(() => setActiveProject(null), []);
 
   return (
     <section id="projects" ref={ref} className={`projects-section${isVisible ? " is-visible" : ""}`} style={{ minHeight: "100vh", padding: "100px 40px", position: "relative", opacity: isVisible ? 1 : 0, transform: isVisible ? "translateY(0)" : "translateY(30px)", transition: "all 0.8s ease-out" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto", zIndex: 5, position: "relative" }}>
         <h2 style={{ fontSize: "clamp(2.5rem, 6vw, 4rem)", fontWeight: 900, color: galaxyTheme.starWhite, margin: "0 0 20px", letterSpacing: "-1px", textAlign: "center" }}><TextReveal>Projects</TextReveal></h2>
-        <div style={{ fontSize: "14px", color: galaxyTheme.neonCyan, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "40px", fontWeight: 600, textAlign: "center" }}>• Recent Work & Case Studies</div>
+        <div style={{ fontSize: "14px", color: galaxyTheme.neonCyan, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "40px", fontWeight: 600, textAlign: "center" }}>• Source-faithful, view-only previews</div>
         <div className="projects-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px" }}>
           {projects.map((project, idx) => (
             <article key={project.title} className="project-card" style={{ animationDelay: `${idx * 80}ms` }}>
-              <a className="project-card__link" href={project.link} target="_blank" rel="noopener noreferrer" aria-label={`Open ${project.title} source repository on GitHub in a new tab`}>
+              <button className="project-card__link" type="button" onClick={() => setActiveProject(project)} aria-label={`Open ${project.title} in-page preview`}>
                 <span className="project-card__art" aria-hidden="true">{project.image}</span>
-                <span className="project-card__copy"><strong>{project.title}</strong><small>{project.details}</small><span className="project-card__description">{project.description}</span><span className="project-card__tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</span><span className="project-card__cta">View source on GitHub <span aria-hidden="true">↗</span></span></span>
-              </a>
+                <span className="project-card__copy"><strong>{project.title}</strong><small>{project.details}</small><span className="project-card__description">{project.description}</span><span className="project-card__tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</span><span className="project-card__cta">Explore preview <span aria-hidden="true">↗</span></span></span>
+              </button>
+              <a className="project-card__source" href={project.link} target="_blank" rel="noopener noreferrer">View source repository <span aria-hidden="true">↗</span></a>
             </article>
           ))}
         </div>
       </div>
+      {activeProject && <ProjectPreview project={activeProject} onClose={closePreview} />}
     </section>
   );
 }
