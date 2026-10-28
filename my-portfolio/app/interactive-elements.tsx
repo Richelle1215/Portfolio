@@ -139,7 +139,7 @@ export function TextReveal({ children, delay = 0 }: { children: string; delay?: 
 }
 
 export function Header({ onNavigate }: { onNavigate?: (id: string) => void }) {
-  const navItems = ["Home", "About", "Skills", "Projects", "Experience", "Contact"];
+  const navItems = ["Home", "About", "Skills", "Projects", "Experience", "Certificates", "Contact"];
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
