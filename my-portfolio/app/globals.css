@@ -821,38 +821,130 @@ section[id] {
   background: rgb(10 7 20 / 44%);
 }
 
-.portfolio-showcase__tabs a {
+.portfolio-showcase__tabs button {
   display: flex;
   min-height: 56px;
   align-items: center;
   justify-content: center;
   gap: 9px;
   border: 1px solid transparent;
+  background: transparent;
   color: rgb(245 240 255 / 72%);
+  cursor: pointer;
+  font: inherit;
   font-size: 12px;
   font-weight: 650;
   transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
 }
 
-.portfolio-showcase__tabs a[aria-current="location"] {
+.portfolio-showcase__tabs button[aria-selected="true"] {
   border-color: rgb(6 249 255 / 27%);
   background: linear-gradient(110deg, rgb(124 58 237 / 22%), rgb(6 249 255 / 10%));
   color: #f5f0ff;
 }
 
-.portfolio-showcase__tabs a:hover,
-.portfolio-showcase__tabs a:focus-visible {
+.portfolio-showcase__tabs button:hover,
+.portfolio-showcase__tabs button:focus-visible {
   color: #8af6ff;
 }
 
-.portfolio-showcase__tabs a:focus-visible {
+.portfolio-showcase__tabs button:focus-visible {
   outline: 2px solid #67f4ff;
   outline-offset: -2px;
 }
 
-.portfolio-showcase__tabs a span {
+.portfolio-showcase__tabs button span {
   color: #69eaf6;
   font-size: 14px;
+}
+
+.portfolio-showcase__panel {
+  min-height: 280px;
+  scroll-margin-top: 84px;
+}
+
+.portfolio-showcase__panel:focus {
+  outline: none;
+}
+
+.portfolio-showcase__panel > .certificate-section {
+  min-height: auto;
+  padding: 46px 0 0;
+  scroll-margin-top: 84px;
+}
+
+.showcase-skills {
+  padding: 43px 0 30px;
+}
+
+.showcase-skills__eyebrow {
+  margin: 0 0 22px;
+  color: #06f9ff;
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.14em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.showcase-skills__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.showcase-skill-card {
+  min-width: 0;
+  padding: 23px;
+  border: 1px solid rgb(6 249 255 / 28%);
+  border-top: 2px solid rgb(6 249 255 / 70%);
+  background:
+    linear-gradient(145deg, rgb(124 58 237 / 8%), transparent 70%),
+    rgb(13 9 25 / 70%);
+  box-shadow: 0 0 18px rgb(255 20 147 / 8%);
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.showcase-skill-card:hover {
+  transform: translateY(-4px);
+  border-color: rgb(6 249 255 / 70%);
+  box-shadow: 0 12px 30px rgb(6 249 255 / 10%);
+}
+
+.showcase-skill-card__icon {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 18px;
+  place-items: center;
+  border: 1px solid rgb(6 249 255 / 30%);
+  background: rgb(6 249 255 / 9%);
+  color: #a4f8ff;
+  font-size: 22px;
+}
+
+.showcase-skill-card h3 {
+  margin: 0 0 15px;
+  color: #f5f0ff;
+  font-size: 18px;
+  font-weight: 720;
+  letter-spacing: -0.025em;
+}
+
+.showcase-skill-card__items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.showcase-skill-card__items span {
+  padding: 6px 9px;
+  border: 1px solid rgb(6 249 255 / 23%);
+  background: rgb(6 249 255 / 7%);
+  color: #88f1fb;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.4;
 }
 
 .project-card__source {
@@ -2191,6 +2283,10 @@ section[id] {
   .project-detail__cover {
     min-height: 250px;
   }
+
+  .showcase-skills__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 600px) {
@@ -2312,6 +2408,25 @@ section[id] {
 
   .project-detail__cover {
     min-height: 230px;
+  }
+
+  .projects-section {
+    padding-inline: 20px !important;
+  }
+
+  .portfolio-showcase__tabs button {
+    min-height: 50px;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 10px;
+  }
+
+  .showcase-skills__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .showcase-skill-card {
+    padding: 20px;
   }
 }
 

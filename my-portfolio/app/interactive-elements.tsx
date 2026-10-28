@@ -3,6 +3,9 @@
 import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import Link from "next/link";
 import { portfolioProjects } from "./portfolio-data";
+import { CertificateGallery } from "./certificate-gallery";
+
+type ShowcaseTab = "projects" | "certificates" | "skills";
 
 const galaxyTheme = {
   darkVoid: "#0a0015",
@@ -140,7 +143,15 @@ export function TextReveal({ children, delay = 0 }: { children: string; delay?: 
 }
 
 export function Header({ onNavigate }: { onNavigate?: (id: string) => void }) {
-  const navItems = ["Home", "About", "Skills", "Projects", "Experience", "Certificates", "Contact"];
+  const navItems: { label: string; href: string; tab?: ShowcaseTab }[] = [
+    { label: "Home", href: "#home" },
+    { label: "About", href: "#about" },
+    { label: "Tech Stack", href: "#projects", tab: "skills" },
+    { label: "Projects", href: "#projects", tab: "projects" },
+    { label: "Experience", href: "#experience" },
+    { label: "Certificates", href: "#projects", tab: "certificates" },
+    { label: "Contact", href: "#contact" },
+  ];
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
@@ -169,18 +180,29 @@ export function Header({ onNavigate }: { onNavigate?: (id: string) => void }) {
       <nav id="site-navigation" className={`site-nav${isMobileMenuOpen ? " is-open" : ""}`} aria-label="Main navigation">
         {navItems.map((item) => (
           <a
-            key={item}
-            href={`#${item.toLowerCase()}`}
-            className={item === "Home" ? "site-nav__link is-home" : "site-nav__link"}
+            key={item.label}
+            href={item.href}
+            className={item.label === "Home" ? "site-nav__link is-home" : "site-nav__link"}
             onClick={(event) => {
+              if (item.tab) {
+                event.preventDefault();
+                window.dispatchEvent(
+                  new CustomEvent("portfolio-showcase-tab", { detail: { tab: item.tab } }),
+                );
+                document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
+                onNavigate?.(item.tab);
+                setIsMobileMenuOpen(false);
+                return;
+              }
+
               if (onNavigate) {
                 event.preventDefault();
-                onNavigate(item.toLowerCase());
+                onNavigate(item.label.toLowerCase());
               }
               setIsMobileMenuOpen(false);
             }}
           >
-            {item}
+            {item.label}
           </a>
         ))}
       </nav>
@@ -380,7 +402,8 @@ export function HeroSection() {
           Full-stack developer passionate about creating innovative solutions. I build web and mobile applications using modern technologies. Welcome to my portfolio where creativity meets code.
         </p>
         <div className="hero-actions">
-          <a className="hero-cta" href="#projects">View Projects</a>
+          <a className="hero-cta" href="/documents/Richelle_Mendez_CV.pdf" target="_blank" rel="noopener noreferrer">View CV</a>
+          <a className="hero-cta hero-cta--secondary" href="/documents/Richelle_Mendez_CV.pdf" download="Richelle_Mendez_CV.pdf">Download CV</a>
         </div>
       </div>
 
@@ -456,39 +479,54 @@ export function AboutSection() {
   );
 }
 
-export function SkillsSection() {
+export function ProjectsSection() {
   const { ref, isVisible } = useScrollAnimation();
+  const [activeTab, setActiveTab] = useState<ShowcaseTab>("projects");
+
+  useEffect(() => {
+    const handleShowcaseTab = (event: Event) => {
+      const tab = (event as CustomEvent<{ tab?: ShowcaseTab }>).detail?.tab;
+      if (tab === "projects" || tab === "certificates" || tab === "skills") {
+        setActiveTab(tab);
+      }
+    };
+
+    window.addEventListener("portfolio-showcase-tab", handleShowcaseTab);
+    return () => window.removeEventListener("portfolio-showcase-tab", handleShowcaseTab);
+  }, []);
+
+  const handleTabKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+
+    const tabs = Array.from(
+      event.currentTarget.querySelectorAll<HTMLButtonElement>('[role="tab"]'),
+    );
+    if (tabs.length === 0) return;
+
+    const activeTabElement =
+      event.target instanceof Element
+        ? event.target.closest<HTMLButtonElement>('[role="tab"]')
+        : null;
+    if (!activeTabElement) return;
+
+    event.preventDefault();
+    const currentIndex = tabs.indexOf(activeTabElement);
+    const nextIndex =
+      event.key === "Home"
+        ? 0
+        : event.key === "End"
+          ? tabs.length - 1
+          : (currentIndex + (event.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length;
+    tabs[nextIndex].focus();
+    setActiveTab((tabs[nextIndex].dataset.tab as ShowcaseTab) ?? "projects");
+  };
+
   const skills = [
     { category: "Backend", icon: "◎", items: ["Laravel", "Blade", "PHP", "REST APIs", "Database Design"] },
     { category: "Mobile", icon: "📱", items: ["Kotlin", "Android Development", "Mobile Apps", "Java"] },
     { category: "Frontend", icon: "</>", items: ["JavaScript", "TypeScript", "React", "Next.js", "HTML & CSS"] },
     { category: "Tools & Platforms", icon: "⚙️", items: ["Git", "GitHub", "MySQL", "Docker", "VS Code"] },
   ];
-
-  return (
-    <section id="skills" ref={ref} style={{ minHeight: "100vh", padding: "100px 40px", position: "relative", overflow: "hidden", opacity: isVisible ? 1 : 0, transform: isVisible ? "translateY(0)" : "translateY(30px)", transition: "all 0.8s ease-out" }}>
-      <div style={{ maxWidth: "1200px", margin: "0 auto", zIndex: 5, position: "relative" }}>
-        <h2 style={{ fontSize: "clamp(2.5rem, 6vw, 4rem)", fontWeight: 900, color: galaxyTheme.starWhite, margin: "0 0 20px", letterSpacing: "-1px", textAlign: "center" }}><TextReveal>Tech Stack</TextReveal></h2>
-        <div style={{ fontSize: "14px", color: galaxyTheme.neonCyan, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "40px", fontWeight: 600, textAlign: "center" }}>• Tools & Technologies</div>
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "20px" }}>
-          {skills.map((skill) => (
-            <div key={skill.category} style={{ background: `${galaxyTheme.vividPurple}08`, border: `1px solid ${galaxyTheme.neonCyan}40`, borderRadius: "12px", padding: "24px", cursor: "pointer", transition: "all 0.3s ease", boxShadow: `0 0 12px ${galaxyTheme.nebulaPink}20` }} onMouseEnter={(e) => { e.currentTarget.style.borderColor = galaxyTheme.neonCyan; e.currentTarget.style.boxShadow = `0 0 25px ${galaxyTheme.neonCyan}40`; e.currentTarget.style.transform = "translateY(-4px)"; }} onMouseLeave={(e) => { e.currentTarget.style.borderColor = `${galaxyTheme.neonCyan}40`; e.currentTarget.style.boxShadow = `0 0 12px ${galaxyTheme.nebulaPink}20`; e.currentTarget.style.transform = "translateY(0)"; }}>
-              <div style={{ width: "50px", height: "50px", background: `${galaxyTheme.neonCyan}20`, borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "24px", marginBottom: "16px", boxShadow: `0 0 12px ${galaxyTheme.neonCyan}40` }}>{skill.icon}</div>
-              <h3 style={{ color: galaxyTheme.starWhite, margin: "0 0 12px", fontSize: "20px" }}>{skill.category}</h3>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                {skill.items.map((item) => (<span key={item} style={{ background: `${galaxyTheme.neonCyan}15`, border: `1px solid ${galaxyTheme.neonCyan}40`, color: galaxyTheme.neonCyan, padding: "6px 12px", borderRadius: "20px", fontSize: "12px", fontWeight: 600 }}>{item}</span>))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-export function ProjectsSection() {
-  const { ref, isVisible } = useScrollAnimation();
 
   return (
     <section id="projects" ref={ref} className={`projects-section${isVisible ? " is-visible" : ""}`} style={{ minHeight: "100vh", padding: "100px 40px", position: "relative", opacity: isVisible ? 1 : 0, transform: isVisible ? "translateY(0)" : "translateY(30px)", transition: "all 0.8s ease-out" }}>
@@ -498,31 +536,52 @@ export function ProjectsSection() {
           <h2>Portfolio Showcase</h2>
           <p>Explore my journey through projects, certifications, and technical expertise. Each project reflects a milestone in my continuous learning path.</p>
         </div>
-        <nav className="portfolio-showcase__tabs" aria-label="Portfolio sections">
-          <a href="#projects" aria-current="location"><span aria-hidden="true">⌘</span>Projects</a>
-          <a href="#certificates"><span aria-hidden="true">♙</span>Certificates</a>
-          <a href="#skills"><span aria-hidden="true">✣</span>Tech Stack</a>
-        </nav>
-        <div className="projects-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px" }}>
-          {portfolioProjects.map((project, idx) => (
-            <article key={project.slug} className="project-card" style={{ animationDelay: `${idx * 80}ms` }}>
-              <Link className="project-card__link" href={`/projects/${project.slug}`} aria-label={`View details for ${project.title}`}>
-                <span className={`project-card__art project-card__art--${project.slug}`} aria-hidden="true">
-                  <span>PROJECT / {String(idx + 1).padStart(2, "0")}</span>
-                  <strong>{project.title}</strong>
-                  <small>{project.category}</small>
-                </span>
-                <span className="project-card__copy">
-                  <strong>{project.title}</strong>
-                  <small>{project.category}</small>
-                  <span className="project-card__description">{project.description}</span>
-                  <span className="project-card__tags">{project.technologies.map((tag) => <span key={tag}>{tag}</span>)}</span>
-                  <span className="project-card__cta">Details <span aria-hidden="true">→</span></span>
-                </span>
-              </Link>
-              <a className="project-card__source" href={project.repository} target="_blank" rel="noopener noreferrer">GitHub repository <span aria-hidden="true">↗</span></a>
-            </article>
-          ))}
+        <div className="portfolio-showcase__tabs" role="tablist" aria-label="Portfolio sections" onKeyDown={handleTabKeyDown}>
+          <button type="button" id="portfolio-tab-projects" role="tab" data-tab="projects" aria-selected={activeTab === "projects"} aria-controls="portfolio-tabpanel" tabIndex={activeTab === "projects" ? 0 : -1} onClick={() => setActiveTab("projects")}><span aria-hidden="true">⌘</span>Projects</button>
+          <button type="button" id="portfolio-tab-certificates" role="tab" data-tab="certificates" aria-selected={activeTab === "certificates"} aria-controls="portfolio-tabpanel" tabIndex={activeTab === "certificates" ? 0 : -1} onClick={() => setActiveTab("certificates")}><span aria-hidden="true">♙</span>Certificates</button>
+          <button type="button" id="portfolio-tab-skills" role="tab" data-tab="skills" aria-selected={activeTab === "skills"} aria-controls="portfolio-tabpanel" tabIndex={activeTab === "skills" ? 0 : -1} onClick={() => setActiveTab("skills")}><span aria-hidden="true">✣</span>Tech Stack</button>
+        </div>
+        <div id="portfolio-tabpanel" className="portfolio-showcase__panel" role="tabpanel" aria-labelledby={`portfolio-tab-${activeTab}`} tabIndex={0}>
+          {activeTab === "projects" && (
+            <div className="projects-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px" }}>
+              {portfolioProjects.map((project, idx) => (
+                <article key={project.slug} className="project-card" style={{ animationDelay: `${idx * 80}ms` }}>
+                  <Link className="project-card__link" href={`/projects/${project.slug}`} aria-label={`View details for ${project.title}`}>
+                    <span className={`project-card__art project-card__art--${project.slug}`} aria-hidden="true">
+                      <span>PROJECT / {String(idx + 1).padStart(2, "0")}</span>
+                      <strong>{project.title}</strong>
+                      <small>{project.category}</small>
+                    </span>
+                    <span className="project-card__copy">
+                      <strong>{project.title}</strong>
+                      <small>{project.category}</small>
+                      <span className="project-card__description">{project.description}</span>
+                      <span className="project-card__tags">{project.technologies.map((tag) => <span key={tag}>{tag}</span>)}</span>
+                      <span className="project-card__cta">Details <span aria-hidden="true">→</span></span>
+                    </span>
+                  </Link>
+                  <a className="project-card__source" href={project.repository} target="_blank" rel="noopener noreferrer">GitHub repository <span aria-hidden="true">↗</span></a>
+                </article>
+              ))}
+            </div>
+          )}
+          {activeTab === "certificates" && <CertificateGallery />}
+          {activeTab === "skills" && (
+            <div id="skills" className="showcase-skills">
+              <p className="showcase-skills__eyebrow">Tools & Technologies</p>
+              <div className="showcase-skills__grid">
+                {skills.map((skill) => (
+                  <article className="showcase-skill-card" key={skill.category}>
+                    <span className="showcase-skill-card__icon" aria-hidden="true">{skill.icon}</span>
+                    <h3>{skill.category}</h3>
+                    <div className="showcase-skill-card__items">
+                      {skill.items.map((item) => <span key={item}>{item}</span>)}
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </section>

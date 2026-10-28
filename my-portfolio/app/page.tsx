@@ -2,14 +2,12 @@ import {
   Header,
   HeroSection,
   AboutSection,
-  SkillsSection,
   ProjectsSection,
   ExperienceSection,
   ContactSection,
   CursorSpotlight,
   ScrollIndicator,
 } from "./interactive-elements";
-import { CertificateGallery } from "./certificate-gallery";
 
 const galaxyTheme = {
   darkVoid: "#090711",
@@ -48,10 +46,8 @@ export default function Home() {
         <Header />
         <HeroSection />
         <AboutSection />
-        <SkillsSection />
         <ProjectsSection />
         <ExperienceSection />
-        <CertificateGallery />
         <ContactSection />
       </div>
     </main>

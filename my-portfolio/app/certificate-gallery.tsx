@@ -46,6 +46,7 @@ type AssetStatus = "loading" | "ready" | "missing";
 
 export function CertificateGallery() {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const headingDialogRef = useRef<HTMLDialogElement>(null);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [assetStatuses, setAssetStatuses] = useState<AssetStatus[]>(
     () => certificates.map(() => "loading"),
@@ -69,8 +70,50 @@ export function CertificateGallery() {
     return () => document.removeEventListener("keydown", handleEscape, true);
   }, [selectedIndex]);
 
+  useEffect(() => {
+    const headingDialog = headingDialogRef.current;
+    const certificatesTab = document.querySelector('[data-tab="certificates"]');
+    
+    const handleTabClick = () => {
+      if (headingDialog && !headingDialog.open) {
+        setTimeout(() => headingDialog.showModal(), 100);
+      }
+    };
+
+    if (certificatesTab) {
+      certificatesTab.addEventListener("click", handleTabClick);
+    }
+
+    // Also listen for the custom event
+    const handleShowcaseTab = (event: Event) => {
+      const tab = (event as CustomEvent<{ tab?: string }>).detail?.tab;
+      if (tab === "certificates" && headingDialog && !headingDialog.open) {
+        setTimeout(() => headingDialog.showModal(), 100);
+      }
+    };
+
+    window.addEventListener("portfolio-showcase-tab", handleShowcaseTab);
+
+    return () => {
+      if (certificatesTab) {
+        certificatesTab.removeEventListener("click", handleTabClick);
+      }
+      window.removeEventListener("portfolio-showcase-tab", handleShowcaseTab);
+    };
+  }, []);
+
   const closeDialog = () => {
     if (dialogRef.current?.open) dialogRef.current.close();
+  };
+
+  const closeHeadingDialog = () => {
+    if (headingDialogRef.current?.open) headingDialogRef.current.close();
+  };
+
+  const showHeadingDialog = () => {
+    if (headingDialogRef.current && !headingDialogRef.current.open) {
+      headingDialogRef.current.showModal();
+    }
   };
 
   const updateAssetStatus = (index: number, status: AssetStatus) => {
@@ -93,56 +136,57 @@ export function CertificateGallery() {
   return (
     <section id="certificates" className="certificate-section">
       <div className="certificate-section__inner">
-        <div className="certificate-section__heading">
-          <p className="certificate-eyebrow">Documents / 01</p>
-          <h2>Credentials</h2>
-          <p className="certificate-section__intro">
-            A closer look at my work, learning, and professional milestones.
-          </p>
-        </div>
-
-        <article className="cv-panel" aria-labelledby="cv-title">
-          <div className="cv-panel__index" aria-hidden="true">
-            <span>PDF</span>
-            <span>01</span>
-          </div>
-          <div className="cv-panel__copy">
-            <p className="certificate-eyebrow">Curriculum vitae</p>
-            <h3 id="cv-title">Richelle Mendez</h3>
-            <p>
-              Explore my experience and skills in the full CV, or download a
-              copy for later.
-            </p>
-          </div>
-          <div className="cv-panel__actions">
-            <a
-              className="cv-action cv-action--primary"
-              href="/documents/Richelle_Mendez_CV.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View CV <span aria-hidden="true">↗</span>
-            </a>
-            <a
-              className="cv-action cv-action--secondary"
-              href="/documents/Richelle_Mendez_CV.pdf"
-              download="Richelle_Mendez_CV.pdf"
-            >
-              Download CV <span aria-hidden="true">↓</span>
-            </a>
-          </div>
-        </article>
-
-        <div className="certificate-collection">
-          <div className="certificate-collection__heading">
-            <div>
-              <p className="certificate-eyebrow">Selected achievements</p>
-              <h3>Certificate collection</h3>
+        <dialog
+          ref={headingDialogRef}
+          className="heading-dialog"
+          aria-labelledby="certificate-heading"
+          onClose={() => {}}
+          style={{
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            border: "none",
+            borderRadius: "12px",
+            padding: "40px",
+            backgroundColor: "rgba(10, 7, 17, 0.95)",
+            backdropFilter: "blur(10px)",
+            boxShadow: "0 0 50px rgba(6, 249, 255, 0.3)",
+            maxWidth: "800px",
+            width: "90%",
+            maxHeight: "90vh",
+            zIndex: 1000,
+            overflow: "auto",
+          } as React.CSSProperties}
+        >
+          <div
+            style={{
+              textAlign: "center",
+            }}
+          >
+            <p style={{ color: "#06f9ff", fontSize: "12px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "16px" }}>Selected achievements</p>
+            <h2 id="certificate-heading" style={{ color: "#f5f0ff", fontSize: "32px", fontWeight: 900, margin: "0 0 30px" }}>
+              Certificate collection
+            </h2>
+            
+            {/* Featured Certificate Image */}
+            <div style={{ marginBottom: "30px", borderRadius: "8px", overflow: "hidden", boxShadow: "0 0 40px rgba(6, 249, 255, 0.2)", maxWidth: "300px", margin: "0 auto 30px" }}>
+              <Image
+                src="/certificates/certificate-01.png"
+                alt="Featured certificate"
+                width={300}
+                height={200}
+                style={{ width: "100%", height: "auto" }}
+              />
             </div>
-            <p className="certificate-collection__count">
+            
+            <p style={{ color: "#a8d5e8", fontSize: "14px", margin: "0" }}>
               {certificates.length} scans
             </p>
           </div>
+        </dialog>
+
+        <div className="certificate-collection">
           <p className="certificate-collection__status">
             {readyCount === certificates.length
               ? "All certificate images are available."
@@ -178,7 +222,10 @@ export function CertificateGallery() {
                       className="certificate-card__open"
                       disabled={!isAvailable}
                       aria-label={`Enlarge certificate ${certificate.number}`}
-                      onClick={() => setSelectedIndex(index)}
+                      onClick={() => {
+                        setSelectedIndex(index);
+                        showHeadingDialog();
+                      }}
                     >
                       View certificate
                     </button>
