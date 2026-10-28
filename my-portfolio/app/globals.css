@@ -126,17 +126,27 @@ section[id] {
 .hero-copy {
   position: relative;
   z-index: 2;
-  max-width: 760px;
+  max-width: 100%;
   animation: hero-arrive 720ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.hero-subtitle {
+  margin: 0 0 12px;
+  color: #8b7abe;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  animation: hero-arrive 720ms cubic-bezier(0.2, 0.7, 0.2, 1) 80ms both;
 }
 
 .hero-title {
   margin: 0;
   color: #f7f3ff;
+  font-weight: 700;
+  font-size: clamp(3rem, 9vw, 5.5rem);
   font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
-  font-size: clamp(4.5rem, 10.5vw, 9.25rem);
-  font-weight: 900;
-  letter-spacing: -0.035em;
+  letter-spacing: 0.05em;
   line-height: 0.9;
   text-transform: uppercase;
   text-shadow: 0 3px 24px rgb(14 5 24 / 18%);
@@ -173,25 +183,28 @@ section[id] {
 }
 
 .hero-intro {
-  max-width: 430px;
+  max-width: 100%;
   margin: 28px 0 0;
   color: rgb(239 233 250 / 76%);
-  font-size: 14px;
+  font-size: 16px;
   letter-spacing: 0.015em;
   line-height: 1.8;
 }
 
 .hero-actions {
   display: flex;
-  margin-top: 24px;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+  align-items: center;
 }
 
 .hero-cta {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 43px;
-  padding: 0 23px;
+  min-height: 40px;
+  padding: 0 20px;
   border: 1px solid rgb(71 231 255 / 72%);
   background: linear-gradient(115deg, #32dff2, #259cff);
   box-shadow: 0 0 24px rgb(30 215 255 / 32%);
@@ -199,12 +212,26 @@ section[id] {
   font-size: 12px;
   font-weight: 750;
   letter-spacing: 0.035em;
+  border-radius: 6px;
   transition: transform 180ms ease, box-shadow 180ms ease;
+  white-space: nowrap;
 }
 
 .hero-cta:hover {
   transform: translateY(-2px);
   box-shadow: 0 0 32px rgb(30 215 255 / 48%);
+}
+
+.hero-cta--secondary {
+  border: 1px solid rgb(139 122 190 / 60%);
+  background: transparent;
+  color: #b7f8ff;
+  box-shadow: none;
+}
+
+.hero-cta--secondary:hover {
+  border-color: #43e9fa;
+  box-shadow: 0 0 16px rgb(67 233 250 / 24%);
 }
 
 .hero-visual {
@@ -380,7 +407,8 @@ section[id] {
   }
 
   .hero-title {
-    font-size: clamp(3.65rem, 14.5vw, 6.2rem);
+    font-weight: 700;
+    font-size: clamp(2.65rem, 8vw, 3.45rem);
     line-height: 0.86;
   }
 
@@ -427,7 +455,8 @@ section[id] {
   }
 
   .hero-title {
-    font-size: clamp(3.25rem, 15.2vw, 4rem);
+    font-weight: 700;
+    font-size: clamp(2.25rem, 15.2vw, 3.5rem);
     letter-spacing: -0.04em;
   }
 
@@ -798,9 +827,9 @@ section[id] {
 .portfolio-showcase__heading h2 {
   margin: 0;
   color: #f5f0ff;
-  font-size: clamp(2.4rem, 6vw, 4rem);
-  font-weight: 850;
-  letter-spacing: -0.055em;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
   line-height: 1.02;
 }
 
@@ -1606,7 +1635,7 @@ section[id] {
 }
 
 .certificate-collection {
-  margin-top: clamp(58px, 8vw, 92px);
+  margin-top: clamp(24px, 3vw, 40px);
 }
 
 .certificate-collection__heading {
@@ -1636,7 +1665,7 @@ section[id] {
 .certificate-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 24px 18px;
+  gap: 12px 10px;
 }
 
 .certificate-card {
@@ -1750,6 +1779,9 @@ section[id] {
 
 .certificate-lightbox {
   position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: min(1100px, calc(100vw - 48px));
   max-width: none;
   max-height: min(92dvh, 1000px);

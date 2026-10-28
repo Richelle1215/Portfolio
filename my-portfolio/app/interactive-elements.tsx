@@ -146,10 +146,8 @@ export function Header({ onNavigate }: { onNavigate?: (id: string) => void }) {
   const navItems: { label: string; href: string; tab?: ShowcaseTab }[] = [
     { label: "Home", href: "#home" },
     { label: "About", href: "#about" },
-    { label: "Tech Stack", href: "#projects", tab: "skills" },
-    { label: "Projects", href: "#projects", tab: "projects" },
     { label: "Experience", href: "#experience" },
-    { label: "Certificates", href: "#projects", tab: "certificates" },
+    { label: "Education", href: "#education" },
     { label: "Contact", href: "#contact" },
   ];
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -211,7 +209,6 @@ export function Header({ onNavigate }: { onNavigate?: (id: string) => void }) {
 }
 
 export function HeroSection() {
-  const heroRef = useRef<HTMLElement>(null);
   const hangerRef = useRef<HTMLDivElement>(null);
   const dragRef = useRef<{
     pointerId: number;
@@ -271,9 +268,10 @@ export function HeroSection() {
     originX: number,
     originY: number,
   ) => {
-    const heroBounds = heroRef.current?.getBoundingClientRect();
-    if (!heroBounds) return { x, y };
+    const hero = document.querySelector(".hero");
+    if (!(hero instanceof HTMLElement)) return { x, y };
 
+    const heroBounds = hero.getBoundingClientRect();
     const headerBottom = document.querySelector(".site-header")?.getBoundingClientRect().bottom ?? 0;
     const leftLimit = Math.max(heroBounds.left, 0);
     const rightLimit = Math.min(heroBounds.right, window.innerWidth);
@@ -386,12 +384,13 @@ export function HeroSection() {
   };
 
   return (
-    <section id="home" ref={heroRef} className="hero">
+    <section id="home" className="hero">
       <div className="hero-copy">
+        <p className="hero-subtitle">WELCOME TO MY PORTFOLIO</p>
         <h1 className="hero-title" aria-label="Hi, I am Richelle">
-          <span aria-hidden="true">HI, I AM</span>
+          <span aria-hidden="true">Hi, I am</span>
           <span className="hero-title__name" aria-hidden="true">
-            {"RICHELLE".split("").map((letter, index) => (
+            {"Richelle".split("").map((letter, index) => (
               <span key={`${letter}-${index}`} style={{ animationDelay: `${index * 85}ms` }}>
                 {letter}
               </span>
@@ -399,11 +398,11 @@ export function HeroSection() {
           </span>
         </h1>
         <p className="hero-intro">
-          Full-stack developer passionate about creating innovative solutions. I build web and mobile applications using modern technologies. Welcome to my portfolio where creativity meets code.
+          An Information Technology student at Our Lady of Lourdes College Foundation looking for an internship opportunity to apply my academic knowledge and skills in the IT industry. With an interest in software development, data analysis, and quality assurance, I am looking forward to contributing to the organization's data-heavy initiatives like system development, data analysis, software testing, and other related projects.
         </p>
         <div className="hero-actions">
-          <a className="hero-cta" href="/documents/Richelle_Mendez_CV.pdf" target="_blank" rel="noopener noreferrer">View CV</a>
-          <a className="hero-cta hero-cta--secondary" href="/documents/Richelle_Mendez_CV.pdf" download="Richelle_Mendez_CV.pdf">Download CV</a>
+          <a className="hero-cta" href="/documents/Richelle_Mendez_CV.pdf" download="Richelle_Mendez_CV.pdf">Download CV</a>
+          <a className="hero-cta hero-cta--secondary" href="#contact">Let's connect</a>
         </div>
       </div>
 
@@ -546,20 +545,17 @@ export function ProjectsSection() {
             <div className="projects-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px" }}>
               {portfolioProjects.map((project, idx) => (
                 <article key={project.slug} className="project-card" style={{ animationDelay: `${idx * 80}ms` }}>
-                  <Link className="project-card__link" href={`/projects/${project.slug}`} aria-label={`View details for ${project.title}`}>
-                    <span className={`project-card__art project-card__art--${project.slug}`} aria-hidden="true">
-                      <span>PROJECT / {String(idx + 1).padStart(2, "0")}</span>
-                      <strong>{project.title}</strong>
-                      <small>{project.category}</small>
-                    </span>
-                    <span className="project-card__copy">
-                      <strong>{project.title}</strong>
-                      <small>{project.category}</small>
-                      <span className="project-card__description">{project.description}</span>
-                      <span className="project-card__tags">{project.technologies.map((tag) => <span key={tag}>{tag}</span>)}</span>
-                      <span className="project-card__cta">Details <span aria-hidden="true">→</span></span>
-                    </span>
-                  </Link>
+                  <span className={`project-card__art project-card__art--${project.slug}`} aria-hidden="true">
+                    <span>PROJECT / {String(idx + 1).padStart(2, "0")}</span>
+                    <strong>{project.title}</strong>
+                    <small>{project.category}</small>
+                  </span>
+                  <span className="project-card__copy">
+                    <strong>{project.title}</strong>
+                    <small>{project.category}</small>
+                    <span className="project-card__description">{project.description}</span>
+                    <span className="project-card__tags">{project.technologies.map((tag) => <span key={tag}>{tag}</span>)}</span>
+                  </span>
                   <a className="project-card__source" href={project.repository} target="_blank" rel="noopener noreferrer">GitHub repository <span aria-hidden="true">↗</span></a>
                 </article>
               ))}
@@ -670,6 +666,42 @@ export function SwingingIDCard() {
           </div>
         </div>
       </div>
+    </section>
+  );
+}
+
+export function EducationSection() {
+  const { ref, isVisible } = useScrollAnimation();
+  const education = [
+    { degree: "Bachelor of Science in Information Technology", school: "Our Lady of Lourdes College Foundation", period: "2023 - Present", status: "Ongoing", description: "Fourth-year student focused on full-stack web development, mobile application development, and quality assurance." },
+    { degree: "Senior High School Graduate", school: "Asian Technological Skills Institute Inc.", period: "2021 - 2023", status: "Completed", description: "General Academic Strand with focus on STEM and technology fundamentals." },
+    { degree: "Junior High School Graduate", school: "Gonzalo Aler National High School", period: "2017 - 2020", status: "Completed", description: "Completed junior secondary education with strong academic performance." },
+  ];
+
+  return (
+    <section id="education" ref={ref} className="education-section" style={{ minHeight: "100vh", padding: "100px 40px", position: "relative", opacity: isVisible ? 1 : 0, transform: isVisible ? "translateY(0)" : "translateY(30px)", transition: "all 0.8s ease-out" }}>
+      <div style={{ maxWidth: "900px", margin: "0 auto", zIndex: 5, position: "relative" }}>
+        <h2 style={{ fontSize: "clamp(2.5rem, 6vw, 4rem)", fontWeight: 900, color: galaxyTheme.starWhite, margin: "0 0 20px", letterSpacing: "-1px", textAlign: "center" }}><TextReveal>Education</TextReveal></h2>
+        <div style={{ fontSize: "14px", color: galaxyTheme.neonCyan, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "60px", fontWeight: 600, textAlign: "center" }}>• Academic Journey</div>
+
+        <div style={{ position: "relative" }}>
+          {education.map((edu, idx) => (
+            <div key={edu.degree} className="education-item" style={{ display: "grid", gridTemplateColumns: "200px 1fr", gap: "40px", marginBottom: "60px", padding: "30px", background: `linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(6, 249, 255, 0.02))`, border: `1px solid ${galaxyTheme.neonCyan}30`, borderRadius: "12px", transition: "all 0.3s ease", opacity: isVisible ? 1 : 0, animation: isVisible ? `slideLeft 0.6s ease-out ${idx * 0.15}s forwards` : "none" }} onMouseEnter={(e) => { e.currentTarget.style.borderColor = galaxyTheme.neonCyan; e.currentTarget.style.boxShadow = `0 0 20px ${galaxyTheme.neonCyan}30`; }} onMouseLeave={(e) => { e.currentTarget.style.borderColor = `${galaxyTheme.neonCyan}30`; e.currentTarget.style.boxShadow = "none"; }}>
+              <div>
+                <div style={{ color: galaxyTheme.neonCyan, fontSize: "12px", fontWeight: 600, letterSpacing: "1px", textTransform: "uppercase", marginBottom: "8px" }}>{edu.period}</div>
+                <div style={{ color: galaxyTheme.hotMagenta, fontSize: "14px", fontWeight: 700 }}>{edu.status}</div>
+              </div>
+
+              <div>
+                <h3 style={{ color: galaxyTheme.starWhite, margin: "0 0 8px", fontSize: "18px", fontWeight: 700 }}>{edu.degree}</h3>
+                <p style={{ color: galaxyTheme.neonCyan, margin: "0 0 12px", fontSize: "14px", fontWeight: 600 }}>{edu.school}</p>
+                <p style={{ color: galaxyTheme.starWhite, opacity: 0.75, lineHeight: 1.6, margin: 0 }}>{edu.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <style>{`@keyframes slideLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }`}</style>
     </section>
   );
 }
