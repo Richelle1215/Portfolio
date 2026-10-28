@@ -479,40 +479,227 @@ export function SkillsSection() {
   );
 }
 
+type PortfolioProject = {
+  title: string;
+  description: string;
+  tags: string[];
+  image: string;
+  link: string;
+  details: string;
+};
+
+const projects: PortfolioProject[] = [
+  { title: "BasicEd Library", description: "School library inventory management system built with Laravel and Blade. Features book cataloging, patron management, borrowing/returning system, and reporting dashboard. Streamlines library operations for educational institutions.", tags: ["Laravel", "Blade", "MySQL", "PHP"], image: "📚", link: "https://github.com/Richelle1215/BasicEd_Library", details: "Library Management System" },
+  { title: "SmartKitchen", description: "AI-powered recipe sharing platform with intelligent recommendations. Built with Laravel backend and modern frontend. Users can discover recipes, share culinary creations, and get personalized suggestions based on preferences and available ingredients.", tags: ["Laravel", "Blade", "JavaScript", "MySQL"], image: "🍳", link: "https://github.com/Richelle1215/SmartKitchen", details: "Recipe Sharing & Discovery" },
+  { title: "Budget Tracker", description: "Personal finance tracker app built with Kotlin for Android. Track expenses, manage budgets, set financial goals, and visualize spending patterns. Helps users gain better control over their personal finances with intuitive categorization and reporting.", tags: ["Kotlin", "Android", "SQLite", "Java"], image: "💰", link: "https://github.com/Richelle1215/Budget-Tracker", details: "Personal Finance Manager" },
+  { title: "HAYST", description: "Large-scale full-stack application. Comprehensive project showcasing advanced development practices, complex business logic, and scalable architecture. Built with Laravel backend demonstrating professional-grade application development.", tags: ["Laravel", "Blade", "PHP", "MySQL"], image: "🎯", link: "https://github.com/Richelle1215/HAYST", details: "Full-Stack Application" },
+  { title: "PetHealthTracker", description: "Mobile app for tracking pet health records. Manage veterinary appointments, vaccinations, medications, and health history. Keep all your pet's medical information organized in one convenient place with reminders for important dates.", tags: ["Kotlin", "Android", "Java", "SQLite"], image: "🐾", link: "https://github.com/Richelle1215/PetHealthTracker", details: "Pet Health Management" },
+  { title: "E-Commerce Platform", description: "Full-featured e-commerce solution built with Laravel and Blade. Product catalog, shopping cart, order management, and payment integration. Modern design with responsive layout optimized for desktop and mobile shopping experiences.", tags: ["Laravel", "Blade", "MySQL", "PHP"], image: "🛍️", link: "https://github.com/Richelle1215/LARAVEL-E-COMMERCE", details: "E-Commerce Solution" },
+];
+
+const libraryBooks = [
+  { title: "The Wild Robot", author: "Peter Brown", category: "Fiction", available: true, code: "FIC · BROWN" },
+  { title: "A Brief History of Time", author: "Stephen Hawking", category: "Science", available: true, code: "SCI · HAWK" },
+  { title: "The Giver", author: "Lois Lowry", category: "Fiction", available: false, code: "FIC · LOWR" },
+  { title: "National Geographic: Ocean", author: "Laura Marsh", category: "Reference", available: true, code: "REF · MARSH" },
+];
+
+const recipes = [
+  { title: "Miso-glazed salmon bowl", time: "25 min", category: "Dinner", image: "🍣", note: "A savory, bright bowl with crisp greens and ginger rice." },
+  { title: "Roasted tomato orzo", time: "30 min", category: "Dinner", image: "🍅", note: "One-pan comfort with blistered tomatoes and fresh basil." },
+  { title: "Blueberry oat pancakes", time: "20 min", category: "Breakfast", image: "🥞", note: "Fluffy whole-grain pancakes for a slow morning." },
+  { title: "Citrus crunch salad", time: "15 min", category: "Lunch", image: "🥗", note: "Crisp greens, orange, toasted seeds, and honey-lime." },
+];
+
+const transactions = [
+  { merchant: "Market & Co.", category: "Food", date: "Today · 10:42 AM", amount: "-$42.80", mark: "M" },
+  { merchant: "Metro Transit", category: "Transport", date: "Today · 8:16 AM", amount: "-$3.25", mark: "↗" },
+  { merchant: "Northstar Books", category: "Shopping", date: "Yesterday", amount: "-$18.00", mark: "N" },
+  { merchant: "Monthly salary", category: "Income", date: "Oct 24", amount: "+$2,840.00", mark: "+" },
+];
+
+const workspaceItems = [
+  { title: "Project overview", detail: "A clear snapshot of milestones, activity, and next steps.", icon: "◫", status: "Updated 12 min ago" },
+  { title: "Team directory", detail: "People, roles, and shared workspace resources.", icon: "◎", status: "8 collaborators" },
+  { title: "Shared documents", detail: "Notes and files organized for quick discovery.", icon: "▤", status: "14 documents" },
+];
+
+const healthTimeline = [
+  { title: "Annual wellness exam", date: "Oct 18, 2025", kind: "Visit", note: "Routine checkup completed. Weight and general health recorded." },
+  { title: "Rabies vaccination", date: "Aug 02, 2025", kind: "Vaccination", note: "Rabies vaccine administered. Next date shown as an illustrative reminder." },
+  { title: "Flea & tick treatment", date: "Jul 15, 2025", kind: "Medication", note: "Monthly preventive care logged for reference." },
+];
+
+const products = [
+  { name: "Everyday canvas tote", category: "Accessories", price: "$28", icon: "👜", note: "A sturdy carry-all for daily essentials." },
+  { name: "Soft-knit throw", category: "Home", price: "$64", icon: "🧶", note: "Textured cotton for a quiet evening in." },
+  { name: "Studio ceramic mug", category: "Home", price: "$22", icon: "☕", note: "Hand-finished stoneware, made for slow mornings." },
+  { name: "Field notes set", category: "Stationery", price: "$16", icon: "📓", note: "Three pocket notebooks for ideas on the go." },
+];
+
+function DemoTabs({ items, value, onChange }: { items: string[]; value: string; onChange: (value: string) => void }) {
+  return (
+    <div className="demo-tabs" role="group" aria-label="Choose a view">
+      {items.map((item) => (
+        <button key={item} type="button" className={value === item ? "is-selected" : ""} aria-pressed={value === item} onClick={() => onChange(item)}>{item}</button>
+      ))}
+    </div>
+  );
+}
+
+function ProjectDemo({ project }: { project: PortfolioProject }) {
+  const [query, setQuery] = useState("");
+  const [filter, setFilter] = useState("All");
+  const [selected, setSelected] = useState(0);
+  const [pet, setPet] = useState("Milo");
+  const [cart, setCart] = useState(0);
+  const [workspaceTab, setWorkspaceTab] = useState("Overview");
+  const [period, setPeriod] = useState("This month");
+
+  if (project.title === "BasicEd Library") {
+    const categories = ["All", "Fiction", "Science", "Reference"];
+    const matches = libraryBooks.filter((book) =>
+      (filter === "All" || book.category === filter) &&
+      `${book.title} ${book.author}`.toLowerCase().includes(query.toLowerCase()),
+    );
+    const book = matches[selected] ?? matches[0];
+    return (
+      <div className="demo-app demo-library">
+        <header className="demo-product-bar"><span className="demo-brand-mark">BE</span><div><strong>BasicEd</strong><small>School library</small></div><span className="demo-product-meta">CAMPUS LIBRARY <b>·</b> 2025–26</span></header>
+        <div className="demo-app-content">
+          <div className="demo-app-heading"><div><span className="demo-eyebrow">LIBRARY OVERVIEW</span><h3>Good morning, librarian</h3><p>Your collection is ready for today.</p></div><span className="demo-date">Tuesday, October 28</span></div>
+          <div className="demo-stats"><div><span>Collection</span><strong>2,481</strong><small>cataloged titles</small></div><div><span>On loan</span><strong>184</strong><small>across 6 grades</small></div><div><span>Due today</span><strong className="demo-accent">12</strong><small>3 overdue</small></div></div>
+          <div className="demo-panel demo-catalog">
+            <div className="demo-panel-heading"><div><span className="demo-eyebrow">THE COLLECTION</span><h4>Find a book</h4></div><span className="demo-count">{matches.length} titles</span></div>
+            <label className="demo-search"><span aria-hidden="true">⌕</span><input value={query} onChange={(event) => { setQuery(event.target.value); setSelected(0); }} placeholder="Search title or author" aria-label="Search book catalog" /></label>
+            <DemoTabs items={categories} value={filter} onChange={(value) => { setFilter(value); setSelected(0); }} />
+            <div className="demo-book-layout"><ul className="demo-list" aria-label="Books">
+              {matches.length ? matches.map((item, index) => <li key={item.title}><button type="button" aria-pressed={selected === index} className={`demo-list-row${selected === index ? " is-active" : ""}`} onClick={() => setSelected(index)}><span className="demo-book-icon" aria-hidden="true">▤</span><span><strong>{item.title}</strong><small>{item.author} · {item.category}</small></span><i className={item.available ? "demo-available" : "demo-unavailable"}>{item.available ? "Available" : "On loan"}</i></button></li>) : <li><p className="demo-empty">No titles match this search. Try another keyword.</p></li>}
+            </ul><aside className="demo-book-detail">{book ? <><div className="demo-book-cover"><span>READ<br />WONDER</span><b aria-hidden="true">✳</b></div><span className="demo-eyebrow">{book.code}</span><h4>{book.title}</h4><p>by {book.author}</p><div className="demo-detail-rule" /><span className="demo-detail-label">COPY STATUS</span><strong className={book.available ? "demo-available" : "demo-unavailable"}>{book.available ? "Available to borrow" : "Currently on loan"}</strong><small>Demo record · no real checkout</small></> : <p className="demo-empty">Choose a book to inspect its catalog record.</p>}</aside></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (project.title === "SmartKitchen") {
+    const categories = ["All", "Breakfast", "Lunch", "Dinner"];
+    const matches = recipes.filter((recipe) => filter === "All" || recipe.category === filter);
+    const recipe = matches[selected] ?? matches[0];
+    return (
+      <div className="demo-app demo-kitchen">
+        <header className="demo-product-bar"><span className="demo-brand-mark demo-brand-warm">sk</span><div><strong>smartkitchen</strong><small>Cook well, waste less</small></div><span className="demo-product-meta">YOUR WEEK, WELL PLANNED</span></header>
+        <div className="demo-app-content">
+          <div className="demo-app-heading"><div><span className="demo-eyebrow">TUESDAY, OCTOBER 28</span><h3>What sounds good?</h3><p>Ideas matched to your kitchen and your mood.</p></div><div className="demo-pantry"><span>IN YOUR PANTRY</span><b>🥬 Spinach</b><b>🍋 Lemons</b></div></div>
+          <div className="demo-panel demo-recipe-panel"><div className="demo-panel-heading"><div><span className="demo-eyebrow">A LITTLE INSPIRATION</span><h4>Recipes for today</h4></div><span className="demo-count">{matches.length} ideas</span></div><DemoTabs items={categories} value={filter} onChange={(value) => { setFilter(value); setSelected(0); }} />
+            {recipe ? <div className="demo-recipe-layout"><div className="demo-recipe-list">{matches.map((item, index) => <button type="button" key={item.title} aria-pressed={selected === index} className={`demo-recipe-row${selected === index ? " is-active" : ""}`} onClick={() => setSelected(index)}><span className="demo-recipe-thumb" aria-hidden="true">{item.image}</span><span><strong>{item.title}</strong><small>{item.category} <b>·</b> {item.time}</small></span><span aria-hidden="true">↗</span></button>)}</div><article className="demo-recipe-detail"><div className="demo-recipe-hero">{recipe.image}<span>{recipe.time} <b>·</b> EASY</span></div><div className="demo-recipe-copy"><span className="demo-eyebrow">TODAY&apos;S PICK</span><h4>{recipe.title}</h4><p>{recipe.note}</p><div className="demo-ingredients"><span>YOU&apos;LL NEED</span><b>Fresh produce</b><b>Pantry staples</b><b>A little olive oil</b></div></div></article></div> : <p className="demo-empty">No recipes in this category yet.</p>}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (project.title === "Budget Tracker") {
+    const categories = ["All", "Food", "Transport", "Shopping", "Income"];
+    const matches = transactions.filter((transaction) => filter === "All" || transaction.category === filter);
+    const selectedTransaction = transactions[selected] ?? transactions[0];
+    return (
+      <div className="demo-app demo-budget">
+        <header className="demo-product-bar"><span className="demo-brand-mark demo-brand-green">◉</span><div><strong>pocket / budget</strong><small>Your money, in focus</small></div><span className="demo-product-meta">LOCAL DEMO ACCOUNT <b>·</b> NO SYNC</span></header>
+        <div className="demo-app-content">
+          <div className="demo-app-heading"><div><span className="demo-eyebrow">FINANCIAL SNAPSHOT</span><h3>Money in, money out.</h3><p>A simple view of your month so far.</p></div><DemoTabs items={["This month", "Last month"]} value={period} onChange={setPeriod} /></div>
+          <div className="demo-money-grid"><div className="demo-money-card demo-balance"><span>AVAILABLE BALANCE</span><strong>{period === "This month" ? "$3,248.60" : "$2,914.20"}</strong><small>↑ 8.4% from last month</small><div className="demo-mini-chart" aria-label="Balance trend"><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /></div></div><div className="demo-money-card"><span>INCOME</span><strong>$2,840.00</strong><small>2 deposits</small></div><div className="demo-money-card"><span>SPENDING</span><strong>$1,126.40</strong><small>of $1,600 monthly plan</small><div className="demo-progress"><i /></div></div></div>
+          <div className="demo-panel"><div className="demo-panel-heading"><div><span className="demo-eyebrow">ACTIVITY</span><h4>Recent transactions</h4></div><span className="demo-count">{matches.length} items</span></div><DemoTabs items={categories} value={filter} onChange={(value) => { setFilter(value); setSelected(transactions.findIndex((transaction) => value === "All" || transaction.category === value)); }} /><div className="demo-transactions">{matches.map((transaction) => <button key={transaction.merchant} type="button" aria-pressed={selected === transactions.indexOf(transaction)} className={`demo-transaction${selected === transactions.indexOf(transaction) ? " is-active" : ""}`} onClick={() => setSelected(transactions.indexOf(transaction))}><span className="demo-transaction-mark" aria-hidden="true">{transaction.mark}</span><span><strong>{transaction.merchant}</strong><small>{transaction.date} · {transaction.category}</small></span><b className={transaction.amount.startsWith("+") ? "demo-positive" : ""}>{transaction.amount}</b></button>)}</div><div className="demo-transaction-detail"><span className="demo-eyebrow">TRANSACTION DETAILS</span><strong>{selectedTransaction.merchant}</strong><span>{selectedTransaction.category} <b>·</b> {selectedTransaction.date}</span><strong className={selectedTransaction.amount.startsWith("+") ? "demo-positive" : ""}>{selectedTransaction.amount}</strong></div><p className="demo-footnote">Sample data for interface exploration only. Nothing is recorded.</p></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (project.title === "HAYST") {
+    const selectedItem = workspaceItems[selected] ?? workspaceItems[0];
+    return (
+      <div className="demo-app demo-workspace">
+        <header className="demo-product-bar"><span className="demo-brand-mark">H</span><div><strong>HAYST</strong><small>Workspace</small></div><span className="demo-product-meta">TEAM SPACE <b>·</b> OVERVIEW</span></header>
+        <div className="demo-workspace-layout"><nav className="demo-workspace-nav" aria-label="Workspace sections"><span className="demo-eyebrow">WORKSPACE</span>{["Overview", "Projects", "People", "Documents"].map((item) => <button type="button" key={item} aria-current={workspaceTab === item ? "page" : undefined} className={workspaceTab === item ? "is-active" : ""} onClick={() => setWorkspaceTab(item)}><span aria-hidden="true">{item === "Overview" ? "⌂" : item === "Projects" ? "◫" : item === "People" ? "◎" : "▤"}</span>{item}</button>)}<div className="demo-workspace-user"><span>RM</span><div><b>Richelle M.</b><small>Workspace admin</small></div></div></nav>
+          <div className="demo-workspace-main"><div className="demo-app-heading"><div><span className="demo-eyebrow">TUESDAY, OCTOBER 28</span><h3>{workspaceTab === "Overview" ? "Your workspace, at a glance." : workspaceTab}</h3><p>Bring your projects, people, and shared work together.</p></div><button type="button" className="demo-outline-action" onClick={() => setWorkspaceTab("Projects")}>Explore workspace <span>→</span></button></div><div className="demo-workspace-kpis"><div><span>Active projects</span><b>04</b><small>2 in progress</small></div><div><span>Team members</span><b>08</b><small>Across 3 groups</small></div><div><span>Shared updates</span><b>12</b><small>This week</small></div></div>          <div className="demo-panel"><div className="demo-panel-heading"><div><span className="demo-eyebrow">YOUR SPACE</span><h4>{workspaceTab === "Overview" ? "Recently viewed" : `${workspaceTab} overview`}</h4></div><span className="demo-count">3 spaces</span></div><div className="demo-workspace-list">{workspaceItems.map((item, index) => <button type="button" key={item.title} aria-pressed={selected === index} className={`demo-workspace-item${selected === index ? " is-active" : ""}`} onClick={() => setSelected(index)}><span className="demo-workspace-item-icon" aria-hidden="true">{item.icon}</span><span><strong>{item.title}</strong><small>{item.detail}</small><i>{item.status}</i></span><b aria-hidden="true">↗</b></button>)}</div><aside className="demo-workspace-selection"><span className="demo-eyebrow">SELECTED SPACE</span><strong>{selectedItem.title}</strong><p>{selectedItem.detail}</p></aside><p className="demo-footnote">Illustrative workspace preview · no accounts or shared data.</p></div></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (project.title === "PetHealthTracker") {
+    const selectedEvent = healthTimeline[selected] ?? healthTimeline[0];
+    return (
+      <div className="demo-app demo-pets">
+        <header className="demo-product-bar"><span className="demo-brand-mark demo-brand-warm">♡</span><div><strong>pawprint</strong><small>Pet health journal</small></div><span className="demo-product-meta">MY PETS <b>·</b> 2 PROFILES</span></header>
+        <div className="demo-app-content">
+          <div className="demo-app-heading"><div><span className="demo-eyebrow">YOUR COMPANIONS</span><h3>Care, all in one place.</h3><p>Health records and little milestones for your pets.</p></div><span className="demo-illustrative">Reminder dates are examples</span></div>
+          <div className="demo-pet-switcher">{[["Milo", "🐕", "Golden retriever · 4 yrs"], ["Luna", "🐈", "Domestic shorthair · 2 yrs"]].map(([name, icon, detail]) => <button type="button" key={name} aria-pressed={pet === name} onClick={() => { setPet(name); setSelected(0); }} className={`demo-pet-card${pet === name ? " is-active" : ""}`}><span className="demo-pet-avatar" aria-hidden="true">{icon}</span><span><strong>{name}</strong><small>{detail}</small></span><b>{pet === name ? "Selected" : "View profile"}</b></button>)}</div>
+          <div className="demo-pet-summary"><div className="demo-pet-portrait">{pet === "Milo" ? "🐕" : "🐈"}</div><div><span className="demo-eyebrow">{pet.toUpperCase()}’S HEALTH JOURNAL</span><h4>{pet} is doing great.</h4><p>Last visit: October 18, 2025 <b>·</b> Wellness check</p></div><div className="demo-next-care"><span>NEXT CARE NOTE</span><strong>Routine check-in</strong><small>Illustrative reminder · Nov 18</small></div></div>
+          <div className="demo-panel"><div className="demo-panel-heading"><div><span className="demo-eyebrow">HEALTH HISTORY</span><h4>Recent timeline</h4></div><span className="demo-count">3 records</span></div><div className="demo-timeline">{healthTimeline.map((item, index) => <button key={item.title} type="button" aria-pressed={selected === index} className={`demo-timeline-row${selected === index ? " is-active" : ""}`} onClick={() => setSelected(index)}><span className="demo-timeline-dot" aria-hidden="true" /><span><small>{item.date} <b>·</b> {item.kind}</small><strong>{item.title}</strong><p>{selected === index ? item.note : "Select to view the record details."}</p></span><b aria-hidden="true">›</b></button>)}</div><p className="demo-footnote">All profile and care details are sample content.</p></div>
+          <span className="sr-only" aria-live="polite">Selected record: {selectedEvent.title}</span>
+        </div>
+      </div>
+    );
+  }
+
+  const categories = ["All", "Accessories", "Home", "Stationery"];
+  const matches = products.filter((product) => (filter === "All" || product.category === filter) && product.name.toLowerCase().includes(query.toLowerCase()));
+  const product = matches[selected] ?? matches[0];
+  return (
+    <div className="demo-app demo-shop">
+      <header className="demo-product-bar"><span className="demo-brand-mark demo-brand-warm">S</span><div><strong>still / studio</strong><small>Thoughtful things, for everyday</small></div><button type="button" className="demo-cart" aria-label={`Demo cart, ${cart} items`}><span>Bag</span><b>{cart}</b></button></header>
+      <div className="demo-app-content"><div className="demo-app-heading"><div><span className="demo-eyebrow">THE EVERYDAY EDIT</span><h3>Good things, made to last.</h3><p>Useful pieces for the little rituals in your day.</p></div><span className="demo-shop-note">COMPLIMENTARY SHIPPING OVER $75</span></div>
+        <div className="demo-panel"><div className="demo-panel-heading"><div><span className="demo-eyebrow">OBJECTS WITH PURPOSE</span><h4>Shop the collection</h4></div><span className="demo-count">{matches.length} pieces</span></div><label className="demo-search"><span aria-hidden="true">⌕</span><input value={query} onChange={(event) => { setQuery(event.target.value); setSelected(0); }} placeholder="Search the collection" aria-label="Search products" /></label><DemoTabs items={categories} value={filter} onChange={(value) => { setFilter(value); setSelected(0); }} />
+          {product ? <div className="demo-shop-layout"><div className="demo-product-grid">{matches.map((item, index) => <button type="button" key={item.name} aria-pressed={selected === index} className={`demo-product-card${selected === index ? " is-active" : ""}`} onClick={() => setSelected(index)}><span className="demo-product-art" aria-hidden="true">{item.icon}</span><span className="demo-product-category">{item.category}</span><strong>{item.name}</strong><b>{item.price}</b></button>)}</div><aside className="demo-product-detail"><span className="demo-product-detail-art" aria-hidden="true">{product.icon}</span><span className="demo-eyebrow">{product.category.toUpperCase()}</span><h4>{product.name}</h4><strong>{product.price}</strong><p>{product.note}</p><button type="button" className="demo-add-cart" onClick={() => setCart((count) => count + 1)}>Add to demo bag <span aria-hidden="true">+</span></button><small>Local-only demo · no checkout or payment</small></aside></div> : <p className="demo-empty">No products match. Try a different search.</p>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function ProjectsSection() {
   const { ref, isVisible } = useScrollAnimation();
-  const projects = [
-    { title: "BasicEd Library", description: "School library inventory management system built with Laravel and Blade. Features book cataloging, patron management, borrowing/returning system, and reporting dashboard. Streamlines library operations for educational institutions.", tags: ["Laravel", "Blade", "MySQL", "PHP"], image: "📚", link: "https://github.com/Richelle1215/BasicEd_Library", details: "Library Management System" },
-    { title: "SmartKitchen", description: "AI-powered recipe sharing platform with intelligent recommendations. Built with Laravel backend and modern frontend. Users can discover recipes, share culinary creations, and get personalized suggestions based on preferences and available ingredients.", tags: ["Laravel", "Blade", "JavaScript", "MySQL"], image: "🍳", link: "https://github.com/Richelle1215/SmartKitchen", details: "Recipe Sharing & Discovery" },
-    { title: "Budget Tracker", description: "Personal finance tracker app built with Kotlin for Android. Track expenses, manage budgets, set financial goals, and visualize spending patterns. Helps users gain better control over their personal finances with intuitive categorization and reporting.", tags: ["Kotlin", "Android", "SQLite", "Java"], image: "💰", link: "https://github.com/Richelle1215/Budget-Tracker", details: "Personal Finance Manager" },
-    { title: "HAYST", description: "Large-scale full-stack application. Comprehensive project showcasing advanced development practices, complex business logic, and scalable architecture. Built with Laravel backend demonstrating professional-grade application development.", tags: ["Laravel", "Blade", "PHP", "MySQL"], image: "🎯", link: "https://github.com/Richelle1215/HAYST", details: "Full-Stack Application" },
-    { title: "PetHealthTracker", description: "Mobile app for tracking pet health records. Manage veterinary appointments, vaccinations, medications, and health history. Keep all your pet's medical information organized in one convenient place with reminders for important dates.", tags: ["Kotlin", "Android", "Java", "SQLite"], image: "🐾", link: "https://github.com/Richelle1215/PetHealthTracker", details: "Pet Health Management" },
-    { title: "E-Commerce Platform", description: "Full-featured e-commerce solution built with Laravel and Blade. Product catalog, shopping cart, order management, and payment integration. Modern design with responsive layout optimized for desktop and mobile shopping experiences.", tags: ["Laravel", "Blade", "MySQL", "PHP"], image: "🛍️", link: "https://github.com/Richelle1215/LARAVEL-E-COMMERCE", details: "E-Commerce Solution" },
-  ];
+  const [selectedProject, setSelectedProject] = useState<PortfolioProject | null>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    if (selectedProject && !dialog.open) dialog.showModal();
+    if (!selectedProject && dialog.open) {
+      dialog.close();
+      triggerRef.current?.focus();
+    }
+  }, [selectedProject]);
+
+  const closePreview = () => setSelectedProject(null);
 
   return (
-    <section id="projects" ref={ref} className="projects-section" style={{ minHeight: "100vh", padding: "100px 40px", position: "relative", opacity: isVisible ? 1 : 0, transform: isVisible ? "translateY(0)" : "translateY(30px)", transition: "all 0.8s ease-out" }}>
+    <section id="projects" ref={ref} className={`projects-section${isVisible ? " is-visible" : ""}`} style={{ minHeight: "100vh", padding: "100px 40px", position: "relative", opacity: isVisible ? 1 : 0, transform: isVisible ? "translateY(0)" : "translateY(30px)", transition: "all 0.8s ease-out" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto", zIndex: 5, position: "relative" }}>
         <h2 style={{ fontSize: "clamp(2.5rem, 6vw, 4rem)", fontWeight: 900, color: galaxyTheme.starWhite, margin: "0 0 20px", letterSpacing: "-1px", textAlign: "center" }}><TextReveal>Projects</TextReveal></h2>
         <div style={{ fontSize: "14px", color: galaxyTheme.neonCyan, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "40px", fontWeight: 600, textAlign: "center" }}>• Recent Work & Case Studies</div>
-
         <div className="projects-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px" }}>
           {projects.map((project, idx) => (
-            <div key={project.title} style={{ background: `linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(255, 20, 147, 0.05))`, border: `1px solid ${galaxyTheme.neonCyan}40`, borderRadius: "12px", overflow: "hidden", cursor: "pointer", transition: "all 0.3s ease", boxShadow: `0 0 20px ${galaxyTheme.nebulaPink}20`, opacity: isVisible ? 1 : 0, animation: isVisible ? `slideUp 0.6s ease-out ${idx * 0.1}s forwards` : "none" }} onMouseEnter={(e) => { e.currentTarget.style.borderColor = galaxyTheme.neonCyan; e.currentTarget.style.boxShadow = `0 0 30px ${galaxyTheme.neonCyan}40`; e.currentTarget.style.transform = "translateY(-8px)"; }} onMouseLeave={(e) => { e.currentTarget.style.borderColor = `${galaxyTheme.neonCyan}40`; e.currentTarget.style.boxShadow = `0 0 20px ${galaxyTheme.nebulaPink}20`; e.currentTarget.style.transform = "translateY(0)"; }}>
-              <div style={{ height: "200px", background: `linear-gradient(135deg, ${galaxyTheme.deepPurple}, ${galaxyTheme.deepBlue})`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "80px", borderBottom: `1px solid ${galaxyTheme.neonCyan}40`, filter: "drop-shadow(0 0 20px rgba(6, 249, 255, 0.3))" }}>{project.image}</div>
-              <div style={{ padding: "24px" }}>
-                <h3 style={{ color: galaxyTheme.starWhite, margin: "0 0 8px", fontSize: "20px", fontWeight: 700 }}>{project.title}</h3>
-                <p style={{ color: galaxyTheme.neonCyan, fontSize: "12px", opacity: 0.7, margin: "0 0 12px", fontWeight: 600 }}>{project.details}</p>
-                <p style={{ color: galaxyTheme.starWhite, opacity: 0.7, fontSize: "14px", margin: "0 0 16px", lineHeight: 1.6 }}>{project.description}</p>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "16px" }}>
-                  {project.tags.map((tag) => (<span key={tag} style={{ background: `${galaxyTheme.hotMagenta}15`, border: `1px solid ${galaxyTheme.hotMagenta}40`, color: galaxyTheme.hotMagenta, padding: "4px 10px", borderRadius: "16px", fontSize: "11px", fontWeight: 600 }}>{tag}</span>))}
-                </div>
-                <a href={project.link} target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", color: galaxyTheme.neonCyan, textDecoration: "none", fontWeight: 600, fontSize: "12px", transition: "all 0.3s ease", cursor: "pointer" }} onMouseEnter={(e) => { e.currentTarget.style.color = galaxyTheme.hotMagenta; }} onMouseLeave={(e) => { e.currentTarget.style.color = galaxyTheme.neonCyan; }}>View on GitHub →</a>
-              </div>
-            </div>
+            <article key={project.title} className="project-card" style={{ animationDelay: `${idx * 80}ms` }}>
+              <button type="button" className="project-card__preview" aria-label={`Open ${project.title} UI preview`} onClick={(event) => { triggerRef.current = event.currentTarget; setSelectedProject(project); }}>
+                <span className="project-card__art" aria-hidden="true">{project.image}</span>
+                <span className="project-card__copy"><strong>{project.title}</strong><small>{project.details}</small><span className="project-card__description">{project.description}</span><span className="project-card__tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</span><span className="project-card__cta">Explore UI preview <span aria-hidden="true">↗</span></span></span>
+              </button>
+              <a className="project-card__github" href={project.link} target="_blank" rel="noopener noreferrer" aria-label={`View ${project.title} on GitHub (opens in a new tab)`}>View on GitHub <span aria-hidden="true">↗</span></a>
+            </article>
           ))}
         </div>
       </div>
+      <dialog ref={dialogRef} className="project-dialog" aria-labelledby="project-dialog-title" onCancel={(event) => { event.preventDefault(); closePreview(); }} onClick={(event) => { if (event.target === event.currentTarget) closePreview(); }}>
+        {selectedProject && <div className="project-dialog__shell">
+          <header className="project-dialog__header"><div className="project-dialog__title"><span aria-hidden="true">{selectedProject.image}</span><div><span className="demo-eyebrow">INTERACTIVE PROJECT PREVIEW</span><h2 id="project-dialog-title">{selectedProject.title}</h2></div></div><button type="button" className="project-dialog__close" onClick={closePreview} autoFocus aria-label="Close project preview"><span aria-hidden="true">×</span><span>Close</span></button></header>
+          <div className="project-dialog__notice"><span aria-hidden="true">i</span><p><strong>UI preview — demo only.</strong> Actions are simulated in your browser. No backend, account, payment, or saved data.</p></div>
+          <ProjectDemo key={selectedProject.title} project={selectedProject} />
+        </div>}
+      </dialog>
       <style>{`@keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }`}</style>
     </section>
   );
