@@ -133,12 +133,13 @@ section[id] {
 .hero-title {
   margin: 0;
   color: #f7f3ff;
-  font-size: clamp(4.3rem, 9.2vw, 8.25rem);
-  font-weight: 850;
-  letter-spacing: -0.085em;
-  line-height: 0.82;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  font-size: clamp(4.5rem, 10.5vw, 9.25rem);
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  line-height: 0.9;
   text-transform: uppercase;
-  text-shadow: 0 3px 32px rgb(14 5 24 / 25%);
+  text-shadow: 0 3px 24px rgb(14 5 24 / 18%);
 }
 
 .hero-title span {
@@ -358,7 +359,7 @@ section[id] {
 
   .hero-title {
     font-size: clamp(3.65rem, 14.5vw, 6.2rem);
-    line-height: 0.84;
+    line-height: 0.86;
   }
 
   .hero-intro {
@@ -405,6 +406,7 @@ section[id] {
 
   .hero-title {
     font-size: clamp(3.25rem, 15.2vw, 4rem);
+    letter-spacing: -0.04em;
   }
 
   .hero-intro {
@@ -514,7 +516,7 @@ section[id] {
 
   .hero-title {
     font-size: clamp(2.65rem, 8vw, 3.45rem);
-    line-height: 0.82;
+    line-height: 0.86;
   }
 
   .hero-title span + span {
@@ -739,16 +741,21 @@ section[id] {
 }
 
 .preview-dialog {
-  width: min(1240px, calc(100vw - 32px));
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: min(1200px, calc(100vw - 48px));
   max-width: none;
-  height: min(900px, calc(100dvh - 32px));
+  height: min(860px, calc(100dvh - 48px));
   max-height: none;
+  margin: 0;
   padding: 0;
   overflow: hidden;
   border: 1px solid rgb(115 242 252 / 34%);
   background: #10101a;
   color: #e8e7ed;
   box-shadow: 0 32px 100px rgb(0 0 0 / 65%), 0 0 40px rgb(6 249 255 / 10%);
+  transform: translate(-50%, -50%);
 }
 
 .preview-dialog::backdrop {
@@ -1250,8 +1257,11 @@ section[id] {
 
 @media (max-width: 700px) {
   .preview-dialog {
+    top: 50%;
+    left: 50%;
     width: calc(100vw - 12px);
     height: calc(100dvh - 12px);
+    transform: translate(-50%, -50%);
   }
 
   .preview-toolbar { min-height: 49px; padding-inline: 9px; }
