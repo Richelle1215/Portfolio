@@ -319,7 +319,7 @@ export function HeroSection() {
     if (!drag || drag.pointerId !== event.pointerId) return;
 
     dragRef.current = null;
-    applyOffset(offsetRef.current.x, offsetRef.current.y, offsetRef.current.rotation);
+    applyOffset(0, 0, 0);
     setIsDragging(false);
 
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
@@ -331,7 +331,7 @@ export function HeroSection() {
     if (dragRef.current?.pointerId !== event.pointerId) return;
 
     dragRef.current = null;
-    applyOffset(offsetRef.current.x, offsetRef.current.y, offsetRef.current.rotation);
+    applyOffset(0, 0, 0);
     setIsDragging(false);
   };
 
