@@ -54,6 +54,9 @@ export function useParallax(speed = 0.5) {
   return offset;
 }
 
+
+
+
 export function CursorSpotlight() {
   const spotlightRef = useRef<HTMLDivElement>(null);
 
