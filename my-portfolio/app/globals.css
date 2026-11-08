@@ -2757,14 +2757,16 @@ section[id] {
 .certificate-orbit__featured-caption h4 {
   margin: 4px 0 2px;
   color: #f4efff;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 650;
+  line-height: 1.4;
 }
 
 .certificate-orbit__featured-caption p {
   margin: 0;
   color: #a99fba;
-  font-size: 9px;
+  font-size: 11px;
+  line-height: 1.5;
 }
 
 .certificate-orbit__open {
@@ -2865,6 +2867,23 @@ section[id] {
   color: #b7adc9;
   font-size: 9px;
   letter-spacing: 0.1em;
+}
+
+.certificate-orbit__satellite-caption {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.certificate-orbit__satellite-title {
+  display: -webkit-box;
+  overflow: hidden;
+  color: #e4deef;
+  font-size: 9px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .certificate-orbit__controls {
@@ -2989,6 +3008,7 @@ section[id] {
   align-items: center;
   justify-content: space-between;
   gap: 7px;
+  min-height: 66px;
   padding: 10px 11px;
 }
 
@@ -2999,24 +3019,40 @@ section[id] {
 }
 
 .certificate-card__caption strong {
-  overflow: hidden;
+  display: -webkit-box;
   color: #e8e2f2;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
 }
 
 .certificate-card__caption small {
   color: #b5a9c5;
-  font-size: 8px;
+  font-size: 9px;
   overflow-wrap: anywhere;
 }
 
+.certificate-card__caption .certificate-card__issuer {
+  color: #a89eb8;
+}
+
 .certificate-card__arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
   flex: 0 0 auto;
   color: #8bdeeb;
   font-size: 12px;
+}
+
+.certificate-card__index {
+  color: #9288a7;
+  font-size: 9px;
+  letter-spacing: 0.08em;
 }
 
 .certificate-card:focus-visible,
@@ -3101,6 +3137,7 @@ section[id] {
   .certificate-orbit {
     min-height: 0;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-items: stretch;
     gap: 9px;
     padding: 12px;
     overflow: visible;
@@ -3116,6 +3153,7 @@ section[id] {
     left: auto;
     width: auto;
     grid-column: 1 / -1;
+    grid-row: 1;
     transform: none;
   }
 
@@ -3132,13 +3170,35 @@ section[id] {
     top: auto;
     right: auto;
     left: auto;
-    width: auto;
-    min-height: 90px;
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-rows: 1fr;
-    align-items: center;
-    gap: 8px;
+    display: grid;
+    width: 100%;
+    min-width: 0;
+    min-height: 132px;
+    grid-column: auto;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+    align-items: stretch;
+    gap: 6px;
+    padding: 8px;
     transform: none;
+  }
+
+  .certificate-orbit__satellite--left,
+  .certificate-orbit__satellite--right {
+    grid-row: 2;
+  }
+
+  .certificate-orbit__satellite--left {
+    grid-column: 1;
+  }
+
+  .certificate-orbit__satellite--right {
+    grid-column: 2;
+  }
+
+  .certificate-orbit__satellite--upper-left,
+  .certificate-orbit__satellite--upper-right {
+    display: none;
   }
 
   .certificate-orbit__satellite:hover,
@@ -3148,11 +3208,24 @@ section[id] {
   }
 
   .certificate-orbit__satellite-image {
-    min-height: 72px;
+    min-width: 0;
+    min-height: 82px;
+  }
+
+  .certificate-orbit__satellite-caption {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: 6px;
   }
 
   .certificate-orbit__satellite-number {
-    padding-right: 4px;
+    padding-top: 1px;
+    font-size: 9px;
+  }
+
+  .certificate-orbit__satellite-title {
+    font-size: 9px;
+    -webkit-line-clamp: 2;
   }
 
   .certificate-orbit__controls {
@@ -3161,6 +3234,7 @@ section[id] {
     bottom: auto;
     left: auto;
     grid-column: 1 / -1;
+    grid-row: 3;
     gap: 10px;
     padding-top: 4px;
   }
@@ -3198,8 +3272,8 @@ section[id] {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .certificate-orbit__satellite-number {
-    padding: 0 2px 2px;
+  .certificate-orbit__satellite-caption {
+    grid-template-columns: auto minmax(0, 1fr);
   }
 
   .certificate-card__caption {
@@ -3207,7 +3281,7 @@ section[id] {
   }
 
   .certificate-card__caption strong {
-    font-size: 9px;
+    font-size: 10px;
   }
 }
 

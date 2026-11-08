@@ -31,14 +31,44 @@ const certificateFiles = [
   "certificate-64.png",
 ];
 
+const certificateDetails = [
+  { title: "The Connected Future: Network Security and IoT Innovations", issuer: "Ethel Programming Computer Programming Services" },
+  { title: "Intro to Cloud Security, Compliance and Identity", issuer: "BlackStride Cyber" },
+  { title: "Cloud Computing Essentials: AWS, Microsoft Azure, and Google Cloud Platform", issuer: "Junior Philippine Computer Society · Clarendon College Chapter" },
+  { title: "Cybersecurity in the Digital Age: Understanding Threats, Defenses, and Best Practices", issuer: "Junior Philippine Computer Society · Clarendon College Chapter" },
+  { title: "2026 Regional Science and Technology Week — Viewing of Exhibits", issuer: "Department of Science and Technology · Regional Office No. 5" },
+  { title: "Guide to Mastering Basic UX for Beginners", issuer: "Junior Philippine Computer Society · Clarendon College Chapter" },
+  { title: "Cybersecurity in the Digital Age: Understanding Threats, Defenses, and Best Practices", issuer: "Junior Philippine Computer Society · Clarendon College Chapter" },
+  { title: "Navigating the Future: Introduction to AI and Digital Security", issuer: "Department of Information and Communications Technology · Eastern Samar" },
+  { title: "Web Dev 101: Web Deployment | Go Live with Vercel", issuer: "UpskillTechPH Training Services" },
+  { title: "Securing AI 101", issuer: "BlackStride Cyber" },
+  { title: "QA 101: Software Testing | The Tech Job Nobody Talks About", issuer: "UpskillTechPH Training Services" },
+  { title: "Cultivating Innovation: Turning Agricultural Challenges into Tech Opportunities", issuer: "Department of Information and Communications Technology · CALABARZON" },
+  { title: "PRESS START: Game Development in Region 8 — Being a Hobbyist Game Dev in the Modern Era", issuer: "DICT Region VIII · ICT Industry Development Bureau" },
+  { title: "Digital Forensics: Digital Artifacts and Cyber Evidence", issuer: "iN Training and Intelligence" },
+  { title: "Understanding Startups & Getting Your Idea Ready for the Philippine Startup Challenge XI", issuer: "DICT Cordillera Administrative Region · ICT Industry Development Bureau" },
+  { title: "Awareness-Raising Campaign on Scams", issuer: "Scam Ready ASEAN" },
+  { title: "Cybersecurity for Everyone", issuer: "Department of Information and Communications Technology · CALABARZON" },
+  { title: "PRESS START: Game Development in Region 8 — Failing, Learning, Creating: The Indie Journey", issuer: "DICT Region VIII · ICT Industry Development Bureau" },
+  { title: "Startup Awareness — Startup Business and Innovation", issuer: "DICT Region VIII · ICT Industry Development Bureau · Startup PH" },
+  { title: "Policy Frameworks for Sustainable Startup Growth", issuer: "Department of Information and Communications Technology · CALABARZON" },
+  { title: "HEAD IN THE CLOUD: Cloud Computing & Cloud-Based Information Systems", issuer: "West Visayas State University · College of ICT" },
+  { title: "Modern Analytics in Practice: End-to-End Data Pipelines, Microsoft Fabric, and Visual Business Intelligence", issuer: "West Visayas State University · College of ICT" },
+  { title: "Future in the Clouds: A Deeper Look Into the Nuances of Cloud Security", issuer: "West Visayas State University · College of ICT" },
+  { title: "Data Analysis and Reporting via Spreadsheet", issuer: "ICT Literacy and Competency Development Bureau" },
+  { title: "5G, IoT and the World Ahead", issuer: "West Visayas State University · College of ICT" },
+];
+
 const certificates = certificateFiles.map((filename, index) => {
   const number = String(index + 1).padStart(2, "0");
+  const details = certificateDetails[index];
 
   return {
     number,
     filename,
     src: `/certificates/${filename}`,
-    alt: `Certificate scan ${number} from Richelle Mendez's certificate collection`,
+    ...details,
+    alt: `Certificate for ${details.title}, issued by ${details.issuer}`,
   };
 });
 
@@ -171,8 +201,8 @@ export function CertificateGallery() {
                   type="button"
                   className={`certificate-orbit__satellite certificate-orbit__satellite--${position}`}
                   key={`${position}-${certificate.number}`}
-                  aria-label={`Select certificate ${certificate.number}${status === "missing" ? ", image missing" : ""}`}
-                  aria-pressed={false}
+                  aria-label={`Feature ${certificate.title}, certificate ${certificate.number}${status === "missing" ? ", image missing" : ""}`}
+                  aria-pressed={index === activeIndex}
                   onClick={() => setActiveIndex(index)}
                 >
                   <span className="certificate-orbit__satellite-image">
@@ -192,8 +222,9 @@ export function CertificateGallery() {
                       className={status === "ready" ? "is-loaded" : ""}
                     />
                   </span>
-                  <span className="certificate-orbit__satellite-number">
-                    {certificate.number}
+                  <span className="certificate-orbit__satellite-caption">
+                    <span className="certificate-orbit__satellite-number">{certificate.number}</span>
+                    <span className="certificate-orbit__satellite-title">{certificate.title}</span>
                   </span>
                 </button>
               );
@@ -231,8 +262,8 @@ export function CertificateGallery() {
               <div className="certificate-orbit__featured-caption">
                 <div>
                   <span>Currently in focus</span>
-                  <h4>Certificate {activeCertificate.number}</h4>
-                  <p>{activeCertificate.filename}</p>
+                  <h4>{activeCertificate.title}</h4>
+                  <p>{activeCertificate.issuer}</p>
                 </div>
                 <button
                   type="button"
@@ -264,64 +295,6 @@ export function CertificateGallery() {
             </div>
           </div>
 
-          <div className="certificate-browse">
-            <div className="certificate-browse__heading">
-              <div>
-                <p className="certificate-collection__count">Browse all</p>
-                <h3>Find another certificate</h3>
-              </div>
-              <span>Choose any scan to feature it above</span>
-            </div>
-            <div className="certificate-grid">
-              {certificates.map((certificate, index) => {
-                const status = assetStatuses[index];
-                const isActive = index === activeIndex;
-
-                return (
-                  <button
-                    type="button"
-                    className={`certificate-card${isActive ? " is-active" : ""}`}
-                    key={certificate.number}
-                    aria-label={`Feature certificate ${certificate.number}${status === "missing" ? ", image unavailable" : ""}`}
-                    aria-pressed={isActive}
-                    onClick={() => setActiveIndex(index)}
-                  >
-                    <span className="certificate-card__preview">
-                      {status !== "ready" && (
-                        <span className="certificate-card__placeholder">
-                          <span className="certificate-card__placeholder-mark" aria-hidden="true">
-                            {status === "missing" ? "!" : "C"}
-                          </span>
-                          <span>{status === "missing" ? "Image unavailable" : "Loading image"}</span>
-                        </span>
-                      )}
-                      <Image
-                        src={certificate.src}
-                        alt={certificate.alt}
-                        fill
-                        sizes="(max-width: 540px) 44vw, (max-width: 900px) 28vw, 20vw"
-                        loading="lazy"
-                        onLoad={() => updateAssetStatus(index, "ready")}
-                        onError={() => updateAssetStatus(index, "missing")}
-                        className={status === "ready" ? "is-loaded" : ""}
-                      />
-                    </span>
-                    <span className="certificate-card__caption">
-                      <span>
-                        <strong>Certificate {certificate.number}</strong>
-                        {status === "missing" && (
-                          <small>Expected: {certificate.filename}</small>
-                        )}
-                      </span>
-                      <span className="certificate-card__arrow" aria-hidden="true">
-                        {isActive ? "✳" : "↗"}
-                      </span>
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
         </div>
       </div>
 
