@@ -9,6 +9,7 @@ import {
   CursorSpotlight,
   ScrollIndicator,
 } from "./interactive-elements";
+import { CertificateGallery } from "./certificate-gallery";
 
 const galaxyTheme = {
   darkVoid: "#090711",
