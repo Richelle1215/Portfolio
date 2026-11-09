@@ -46,6 +46,7 @@ export default function Home() {
       <div style={{ position: "relative", zIndex: 1 }}>
         <Header />
         <HeroSection />
+        <CertificateGallery />
         <AboutSection />
         <ProjectsSection />
         <ExperienceSection />
