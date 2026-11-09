@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+
+
 const certificateFiles = [
   "certificate-01.png",
   "certificate-03.jpeg",
