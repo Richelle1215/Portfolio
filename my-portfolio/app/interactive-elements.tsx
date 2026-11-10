@@ -401,7 +401,7 @@ export function HeroSection() {
           </span>
         </h1>
         <p className="hero-intro">
-          An Information Technology student at Our Lady of Lourdes College Foundation looking for an internship opportunity to apply my academic knowledge and skills in the IT industry. With an interest in software development, data analysis, and quality assurance, I am looking forward to contributing to the organization's data-heavy initiatives like system development, data analysis, software testing, and other related projects.
+         Hello! I am a fourth-year Bachelor of Science in Information Technology student at Our Lady of Lourdes College Foundation. I bring core skills in full-stack web development, data analytics, mobile application development, and quality assurance. Quick to adapt and eager to contribute to project workflows, I offer hands-on experience in Laravel-based web development, relational database management, and the ongoing development of a Kotlin-based Android application.
         </p>
         <div className="hero-actions">
           <a className="hero-cta" href="/documents/Richelle_Mendez_CV.pdf" download="Richelle_Mendez_CV.pdf">Download CV</a>

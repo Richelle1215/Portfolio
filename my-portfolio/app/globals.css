@@ -3398,3 +3398,87 @@ section[id] {
   transform: translate3d(0, 0, 0);
   filter: contrast(1.2) brightness(1.05);
 }
+
+
+/* Certificate Gallery Grid - Replaces Orbit Sphere */
+.cert-gallery-container {
+  width: 100%;
+  min-height: 100vh;
+  padding: 80px 40px;
+  background: linear-gradient(135deg, #0a0015 0%, #1a0033 50%, #001a4d 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.cert-gallery-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #f5f0ff;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 0 0 20px 0;
+  text-align: center;
+}
+
+.cert-gallery-hint {
+  font-size: 12px;
+  color: #06f9ff;
+  opacity: 0.6;
+  letter-spacing: 0.5px;
+  margin: 0 0 60px 0;
+  text-align: center;
+}
+
+.cert-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.cert-gallery-item {
+  position: relative;
+  aspect-ratio: 4/3;
+  border-radius: 8px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #2a2a28 0%, #1a1a18 100%);
+  border: 1px solid rgba(6, 249, 255, 0.2);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cert-gallery-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(6, 249, 255, 0.3);
+  border-color: rgba(6, 249, 255, 0.4);
+}
+
+.cert-gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  image-rendering: high-quality;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* Hide old sphere styles */
+.cert-orbit-stage {
+  display: none !important;
+}
+
+.cert-orbit-sphere {
+  display: none !important;
+}
+
+.cert-card {
+  display: none !important;
+}
