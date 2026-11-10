@@ -221,6 +221,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="alternate" hrefLang="en" href="https://richelle-portfolio.com" />
         <link rel="alternate" hrefLang="fil" href="https://richelle-portfolio.com/fil" />
         
+        {/* Google Search Console Verification */}
+        <meta name="google-site-verification" content="google81d92ac71d8b8b31" />
+        
         {/* JSON-LD Structured Data for AI Overview */}
         <script
           type="application/ld+json"
