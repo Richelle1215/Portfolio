@@ -20,10 +20,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     "@type": "Person",
     "@id": "https://richelle-portfolio.com#person",
     name: "Richelle Mendez",
-    alternateName: ["Richelle Aguilar Mendez"],
+    alternateName: ["Richelle Aguilar Mendez", "Richelle A. Mendez", "Richelle Aguilar"],
     url: "https://richelle-portfolio.com",
     image: "https://richelle-portfolio.com/ID.png",
-    description: "Full-Stack Developer, IT Student, Web Developer & Software QA Enthusiast. Specializing in Laravel, React, Next.js, and Kotlin.",
+    description: "Richelle Aguilar Mendez - Full-Stack Developer, IT Student, Web Developer & Software QA Enthusiast. Specializing in Laravel, React, Next.js, and Kotlin.",
     jobTitle: [
       "Full-Stack Developer",
       "Web Developer",

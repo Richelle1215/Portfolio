@@ -2,8 +2,6 @@
 
 import { CertificateOrbit } from './certificate-orbit';
 
-
-
 const certificateFiles = [
   'certificate-01.png',
   'certificate-03.jpeg',
