@@ -390,7 +390,7 @@ export function HeroSection() {
     <section id="home" className="hero">
       <div className="hero-copy">
         <p className="hero-subtitle">WELCOME TO MY PORTFOLIO</p>
-        <h1 className="hero-title" aria-label="Hi, I am Richelle">
+        <h1 className="hero-title" aria-label="Hi, I am Richelle Aguilar Mendez">
           <span aria-hidden="true">Hi, I am</span>
           <span className="hero-title__name" aria-hidden="true">
             {"Richelle".split("").map((letter, index) => (
